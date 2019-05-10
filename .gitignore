@@ -1,0 +1,33 @@
+# C++ ignore rules
+**.o
+
+# Java ignore rules
+**.class
+**.jar
+!**wrapper.jar
+
+# Python rules
+**.pyc
+
+
+# Gradle Ignore rules
+**/build
+**/.gradle
+
+# Deploy Rules
+**.zip
+
+# Eclipse Project Rules
+**/.project
+**/.classpath
+
+**.bak
+
+# Latex
+**.aux
+**.toc
+**.dvi
+**latexmk
+**.fls
+**.log
+**.out

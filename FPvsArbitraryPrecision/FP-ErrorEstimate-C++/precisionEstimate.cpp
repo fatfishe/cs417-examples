@@ -1,6 +1,18 @@
 #include <cmath>
+#include <cfloat>
 #include <iostream>
 #include <iomanip>
+
+#include <quadmath.h>
+
+/*
+namespace std {
+    __float128 abs( __float128 x )
+    {
+        return x;
+    }
+}
+*/
 
 template<typename T>
 T estimatePrecision()
@@ -24,12 +36,23 @@ int main(int argc, char** argv)
 
     long start = time(NULL);
 
+    float sp;
+    double dp;
+    //__float128 qp;
+
     for (long i = 0; i < num_execs ; i++) {
-        float  sp = estimatePrecision<float>();
-        double dp = estimatePrecision<double>();
+        sp = estimatePrecision<float>();
+        dp = estimatePrecision<double>();
+        //qp = estimatePrecision<__float128>();
     }
 
     long stop = time(NULL);
+
+    std::cout << sp << "\n"
+              << dp << "\n";
+              //<< qp << "\n";
+
+    //printf("%.36Qg\n", qp);
 
     std::cout << (stop - start) << " secs" << "| " << num_execs << " # executions" << "\n";
 

@@ -8,6 +8,7 @@ import typing
 from decimal import (Decimal)
 import decimal
 
+
 def estimatePrecisionFloat():
     a = (4.0 / 3.0)
     b = a - 1.0
@@ -15,15 +16,17 @@ def estimatePrecisionFloat():
 
     return math.fabs(c - 1.0)
 
+
 def estimatePrecisionFloatTypeHints() -> float:
-    a = (4.0 / 3.0) # type: float
-    b = a - 1.0 # type: float
-    c = b + b + b # type: float
+    a = (4.0 / 3.0)  # type: float
+    b = a - 1.0      # type: float
+    c = b + b + b    # type: float
 
     return math.fabs(c - 1.0)
 
-def estimatePrecisionDecimal():
-    a = Decimal(1.33333)#(Decimal(4.0) / Decimal(3.0))
+
+def estimatePrecisionDecimal() -> Decimal:
+    a = Decimal(4.0) / Decimal(3.0)
     b = a - Decimal(1.0)
     c = b + b + b
 
@@ -42,7 +45,6 @@ if __name__ == "__main__":
     except ValueError as e:
         sys.exit(1)
 
-
     estimation_function = estimatePrecisionFloat
     est_type = "float"
 
@@ -51,11 +53,9 @@ if __name__ == "__main__":
 
     if est_type == "arbitrary":
         estimation_function = estimatePrecisionDecimal
+
     elif est_type == "float-th":
         estimation_function = estimatePrecisionFloatTypeHints
-
-    if len(sys.argv) == 3:
-        est_type = sys.argv[2]
 
     if len(sys.argv) == 4:
         decimal.getcontext().prec = int(sys.argv[3])
@@ -66,5 +66,6 @@ if __name__ == "__main__":
         x = estimation_function()
 
     stop = time.time()
+    total_time = stop-start
 
-    print("{} secs | {} # executions".format((stop - start), num_execs))
+    print(f"{total_time:0.8f} secs | {num_execs:>10} executions")

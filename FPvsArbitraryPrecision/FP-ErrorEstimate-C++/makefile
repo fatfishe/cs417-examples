@@ -2,8 +2,8 @@ MAINPROG=precisionEstimate
 
 SOURCES:=$(wildcard *.cpp)
 OBJECTS=$(SOURCES:.cpp=.o)
-FLAGS=-std=c++17 -fsanitize=address -fuse-ld=gold -Wall -O3 \
-      -fext-numeric-literals -lquadmath
+FLAGS=-std=c++17 -fsanitize=address -fuse-ld=gold -Wall -MMD \
+      -fext-numeric-literals -lquadmath #-O3
 
 all: $(SOURCES) $(MAINPROG)
 

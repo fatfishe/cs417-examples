@@ -1,5 +1,6 @@
 # C++ ignore rules
 **.o
+**.d
 
 # Java ignore rules
 **.class

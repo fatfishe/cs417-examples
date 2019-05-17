@@ -1,43 +1,35 @@
 #include <cmath>
-#include <cfloat>
 #include <iostream>
 #include <iomanip>
+#include <functional>
 
-// Use Boost float128
-#include <boost/multiprecision/float128.hpp>
+#include "cleveMoler.h"
 
-using namespace boost::multiprecision;
 
-// An ugly bodge
-namespace std {
-    float128 abs(float128 x)
-    {
-        return x;
-    }
-}
-
+/**
+ * Run an arbitrary function a predefined number of times.
+ *
+ * @param f function to run
+ * @param num_execs number of function executions
+ *
+ * @return total execution time
+ */
 template<typename T>
-T estimatePrecision()
+long performExecs(T (*f)(), long num_execs)
 {
-    T a = (4.0 / 3.0);
-    T b = a - 1.0;
-    T c = b + b + b;
+    long start = time(NULL);
+    T p;
 
-    return std::abs(c - 1.0);
+    for (long i = 0; i < num_execs ; i++) {
+        p = f();
+    }
+
+    long stop = time(NULL);
+
+    return stop - start;
 }
 
-template<>
-float128 estimatePrecision<float128>()
-{
-    using T = float128;
-
-    T a = (4.0Q / 3.0Q);
-    T b = a - 1.0Q;
-    T c = b + b + b;
-
-    return (c - 1.0Q);
-}
-
+//------------------------------------------------------------------------------
 int main(int argc, char** argv)
 {
     if (argc < 2) {
@@ -47,25 +39,25 @@ int main(int argc, char** argv)
 
     long num_execs = std::stol(argv[1]);
 
-    long start = time(NULL);
-
     float sp;
     double dp;
     float128 qp; // float128 is added by boost
 
-    for (long i = 0; i < num_execs ; i++) {
-        sp = estimatePrecision<float>();
-        dp = estimatePrecision<double>();
-        qp = estimatePrecision<float128>();
-    }
-
-    long stop = time(NULL);
-
+    /*
     std::cout << sp << "\n"
               << dp << "\n"
               << qp << "\n";
+    */
 
-    std::cout << (stop - start) << " secs" << "| " << num_execs << " # executions" << "\n";
+    std::cout << performExecs(estimatePrecision<float>, num_execs) << " secs"
+              << " | "
+              << num_execs << " # executions" << "\n";
+    std::cout << performExecs(estimatePrecision<double>, num_execs) << " secs"
+              << " | "
+              << num_execs << " # executions" << "\n";
+    std::cout << performExecs(estimatePrecision<float128>, num_execs) << " secs"
+              << " | "
+              << num_execs << " # executions" << "\n";
 
     return 0;
 }

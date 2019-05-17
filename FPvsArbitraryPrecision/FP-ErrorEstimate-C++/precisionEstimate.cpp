@@ -3,16 +3,18 @@
 #include <iostream>
 #include <iomanip>
 
-#include <quadmath.h>
+// Use Boost float128
+#include <boost/multiprecision/float128.hpp>
 
-/*
+using namespace boost::multiprecision;
+
+// An ugly bodge
 namespace std {
-    __float128 abs( __float128 x )
+    float128 abs(float128 x)
     {
         return x;
     }
 }
-*/
 
 template<typename T>
 T estimatePrecision()
@@ -24,6 +26,17 @@ T estimatePrecision()
     return std::abs(c - 1.0);
 }
 
+template<>
+float128 estimatePrecision<float128>()
+{
+    using T = float128;
+
+    T a = (4.0Q / 3.0Q);
+    T b = a - 1.0Q;
+    T c = b + b + b;
+
+    return (c - 1.0Q);
+}
 
 int main(int argc, char** argv)
 {
@@ -38,21 +51,19 @@ int main(int argc, char** argv)
 
     float sp;
     double dp;
-    //__float128 qp;
+    float128 qp; // float128 is added by boost
 
     for (long i = 0; i < num_execs ; i++) {
         sp = estimatePrecision<float>();
         dp = estimatePrecision<double>();
-        //qp = estimatePrecision<__float128>();
+        qp = estimatePrecision<float128>();
     }
 
     long stop = time(NULL);
 
     std::cout << sp << "\n"
-              << dp << "\n";
-              //<< qp << "\n";
-
-    //printf("%.36Qg\n", qp);
+              << dp << "\n"
+              << qp << "\n";
 
     std::cout << (stop - start) << " secs" << "| " << num_execs << " # executions" << "\n";
 

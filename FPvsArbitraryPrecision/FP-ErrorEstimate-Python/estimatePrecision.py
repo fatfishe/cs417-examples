@@ -7,9 +7,10 @@ import typing
 
 from decimal import (Decimal)
 import decimal
+from fractions import Fraction
 
 
-def estimatePrecisionFloat():
+def estimate_precision_float():
     a = (4.0 / 3.0)
     b = a - 1.0
     c = b + b + b
@@ -17,7 +18,7 @@ def estimatePrecisionFloat():
     return math.fabs(c - 1.0)
 
 
-def estimatePrecisionFloatTypeHints() -> float:
+def estimate_precision_float_type_hints() -> float:
     a = (4.0 / 3.0)  # type: float
     b = a - 1.0      # type: float
     c = b + b + b    # type: float
@@ -25,7 +26,7 @@ def estimatePrecisionFloatTypeHints() -> float:
     return math.fabs(c - 1.0)
 
 
-def estimatePrecisionDecimal() -> Decimal:
+def estimate_precision_decimal() -> Decimal:
     a = Decimal(4.0) / Decimal(3.0)
     b = a - Decimal(1.0)
     c = b + b + b
@@ -33,39 +34,53 @@ def estimatePrecisionDecimal() -> Decimal:
     return abs(c)
 
 
-if __name__ == "__main__":
+def perform_execs(est_func, num_execs):
+    """
+    Run an arbitrary function a predefined number of times.
 
+    :param est_func: estimation function to run
+    :param num_execs: number of function executions
+
+    :return: 2-tuple containing estimated precions and total execution time
+    """
+
+    start = time.time()
+
+    for i in range(0, num_execs):
+        x = est_func()
+
+    stop = time.time()
+    total_time = stop - start
+
+    return (x, total_time)
+
+
+def main():
     if len(sys.argv) < 2:
-        print("Usage: {} num_execs [float|arbitrary] [arbitrary precision]")
+        print("Usage: {} num_execs".format(sys.argv[0]))
         sys.exit(1)
 
     num_execs = 0
     try:
         num_execs = int(sys.argv[1])
+
     except ValueError as e:
         sys.exit(1)
 
-    estimation_function = estimatePrecisionFloat
-    est_type = "float"
-
     if len(sys.argv) == 3:
-        est_type = sys.argv[2]
+        decimal.getcontext().prec = int(sys.argv[2])
 
-    if est_type == "arbitrary":
-        estimation_function = estimatePrecisionDecimal
+    precision = decimal.getcontext().prec
 
-    elif est_type == "float-th":
-        estimation_function = estimatePrecisionFloatTypeHints
+    estimate_functions = [("float", estimate_precision_float),
+                          ("float-type-hint", estimate_precision_float_type_hints),
+                          ("Decimal-{}".format(precision), estimate_precision_decimal)]
 
-    if len(sys.argv) == 4:
-        decimal.getcontext().prec = int(sys.argv[3])
+    for label, function in estimate_functions:
+        estimate, total_time = perform_execs(function, num_execs)
 
-    start = time.time()
+        print("{:>16}|{:>5.4f}|{}".format(label, total_time, estimate))
 
-    for i in range(0, num_execs):
-        x = estimation_function()
 
-    stop = time.time()
-    total_time = stop-start
-
-    print(f"{total_time:0.8f} secs | {num_execs:>10} executions")
+if __name__ == "__main__":
+    main()

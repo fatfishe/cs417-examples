@@ -39,8 +39,32 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    long numExecs = std::stol(argv[1]);
+    long numExecs = -1;
 
+    // Argument parsing & validation
+    try {
+        numExecs = std::stol(argv[1]);
+
+        if (numExecs <= 0) {
+            throw std::domain_error("\"" + string(argv[1]) + "\" is not > 0"
+                                  + " and <= "
+                                  + to_string(std::numeric_limits<long>::max()));
+        }
+    }
+    catch (const std::invalid_argument& e) {
+        cout << "ERROR: \"" << argv[1] << "\" is not a valid number" << "\n";
+        cout << e.what() << "\n";
+
+        return 1;
+    }
+    catch (const std::domain_error& e) {
+        cout << "ERROR: \"" << argv[1] << "\" is not a valid number" << "\n";
+        cout << e.what() << "\n";
+
+        return 2;
+    }
+
+    // Perform Cleve Moler precision estimates
     float    sp = estimatePrecision<float>();
     double   dp = estimatePrecision<double>();
     float128 qp = estimatePrecision<float128>();

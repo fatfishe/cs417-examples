@@ -2,7 +2,7 @@ MAINPROG=timeDilation
 
 SOURCES:=$(wildcard *.cpp)
 OBJECTS=$(SOURCES:.cpp=.o)
-FLAGS=-std=c++11
+FLAGS=-std=c++17 -Wall -fsanitize=address,leak -fuse-ld=gold
 
 all: $(SOURCES) $(MAINPROG)
 
@@ -20,5 +20,4 @@ runCpp: $(MAINPROG)
 
 runPython:
 	./timeDilationRevised.py
-
 

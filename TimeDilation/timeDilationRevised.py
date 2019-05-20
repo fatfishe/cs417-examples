@@ -9,7 +9,7 @@ C = Decimal("299792458")
 C_SQRD = C ** 2
 MPH_TO_MS = Decimal("0.44704")
 
-def computeGamma(speed):
+def compute_gamma(speed):
     """
     Compute Gamma and Inverse Gamma
 
@@ -36,7 +36,7 @@ def main():
     for speed in range(10, 65, 5):
         speed_in_ms = speed * MPH_TO_MS
 
-        gamma, gamma_inv = computeGamma(speed_in_ms)
+        gamma, gamma_inv = compute_gamma(speed_in_ms)
 
         proptime = driving_time / gamma_inv
 

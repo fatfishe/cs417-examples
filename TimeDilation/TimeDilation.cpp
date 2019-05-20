@@ -11,47 +11,39 @@ const double MPH_TO_M_DIV_S = 0.44704;
 const double C              = 299791958; // speed of light (m/s)
 const double C_SQUARED      = C * C;
 
+const int DAY_PER_WEEK   = 5;      // Based on 5-day work-week
+const int WEEKS_PER_YEAR = 16 * 2; // Based on fall & spring semesters
+const int DRIVE_DURATION = 60;     // length of drive one way in minutes
+const int MINUTES_TO_SECONDS = 60;
+
 const std::string DIVIDER(32, '-');
 
 int main(int argc, char**  argv)
 {
-    double gamma     = 0.0;
-    double gamma_inv = 0.0;
-
-    double proper_time = 0.0;
-    double time        = 1; //in hours
-
-    double diff = 0.0;
-
-    const int days_per_week  = 5;
-    const int weeks_per_year = 16 * 2;
-    const int drive_duration = 60; // length of drive one way in minutes
-
-    time = 2 * days_per_week
-         * weeks_per_year
-         * drive_duration * 60 ; //time driving to/from odu in one year in seconds
+    double time = 2 * DAY_PER_WEEK * WEEKS_PER_YEAR
+                * DRIVE_DURATION * MINUTES_TO_SECONDS;
 
     cout.setf(ios::fixed);
-    setprecision(8);
+    setprecision(32);
 
     for(double speed = 10; speed <= 60; speed += 5)
     {
-        double speed_in_ms = (speed * MPH_TO_M_DIV_S);
+        double speed_in_ms = speed * MPH_TO_M_DIV_S;
 
-        gamma     = 1.0 / sqrt(1 - pow((speed_in_ms / C), 2));
-        gamma_inv = (C_SQUARED - (.5 * pow(speed_in_ms, 2.0))) / C_SQUARED;
+        double gamma     = 1.0 / sqrt(1 - pow((speed_in_ms / C), 2));
+        double gamma_inv = (C_SQUARED - (0.5 * pow(speed_in_ms, 2.0))) / C_SQUARED;
 
-        proper_time = time / gamma_inv;
+        double proper_time = time / gamma_inv;
 
-        diff = time - proper_time;
+        double diff = time - proper_time;
 
         cout << "Mph          " << right << setw(19) << speed       << "\n";
         cout << "m/s          " << right << setw(19) << speed_in_ms << "\n";
-        
+
         cout << DIVIDER << "\n";
         cout << "Gamma        " << right << setw(19) << gamma       << "\n";
         cout << "Gamma inv    " << right << setw(19) << gamma_inv   << "\n";
-        
+
         cout << DIVIDER << "\n";
         cout << "Time         " << right << setw(19) << time        << "\n";
         cout << "Time(proper) " << right << setw(19) << proper_time << "\n";

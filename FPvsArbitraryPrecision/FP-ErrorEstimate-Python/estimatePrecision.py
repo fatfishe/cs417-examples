@@ -9,6 +9,8 @@ from decimal import (Decimal)
 import decimal
 from fractions import Fraction
 
+import cleve_moler as cm
+
 
 def estimate_precision_float():
     a = (4.0 / 3.0)
@@ -57,7 +59,7 @@ def perform_execs(est_func, num_execs):
 
 def main():
     if len(sys.argv) < 2:
-        print("Usage: {} num_execs".format(sys.argv[0]))
+        print(f"Usage: {sys.argv[0]:} num_execs [arbitrary precision]")
         sys.exit(1)
 
     num_execs = 0
@@ -72,14 +74,14 @@ def main():
 
     precision = decimal.getcontext().prec
 
-    estimate_functions = [("float", estimate_precision_float),
-                          ("float-type-hint", estimate_precision_float_type_hints),
-                          ("Decimal-{}".format(precision), estimate_precision_decimal)]
+    estimate_functions = [("float", cm.estimate_precision_float),
+                          ("float-type-hint", cm.estimate_precision_float_type_hints),
+                          (f"Decimal-{precision:}", cm.estimate_precision_decimal)]
 
     for label, function in estimate_functions:
         estimate, total_time = perform_execs(function, num_execs)
 
-        print("{:>16}|{:>5.4f}|{}".format(label, total_time, estimate))
+        print(f"{label:>16}|{total_time:>7.4f}|{estimate:}")
 
 
 if __name__ == "__main__":

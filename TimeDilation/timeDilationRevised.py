@@ -9,6 +9,7 @@ C = Decimal("299792458")
 C_SQRD = C ** 2
 MPH_TO_MS = Decimal("0.44704")
 
+
 def compute_gamma(speed):
     """
     Compute Gamma and Inverse Gamma
@@ -16,7 +17,7 @@ def compute_gamma(speed):
     :param: speed speed in m/s
     """
 
-    gamma     = Decimal(1.0) / Decimal.sqrt(1 - (speed / C) ** Decimal(2)) 
+    gamma     = Decimal(1.0) / Decimal.sqrt(1 - (speed / C) ** Decimal(2))
     gamma_inv = Decimal(C_SQRD - Decimal(Decimal(0.5) * speed * speed)) / C_SQRD
 
     # print(repr(1 - (speed / C_SQRD)))
@@ -31,7 +32,7 @@ def main():
     else:
         getcontext().prec = 32
 
-    driving_time = Decimal((2 * 5) * (16 * 2) * 3600) # time driving to/from odu in one year
+    driving_time = Decimal((2 * 5) * (16 * 2) * 3600)  # time driving to/from odu in one year
 
     for speed in range(10, 65, 5):
         speed_in_ms = speed * MPH_TO_MS
@@ -41,7 +42,7 @@ def main():
         proptime = driving_time / gamma_inv
 
         diff = driving_time - proptime
-        
+
         print("-" * (14 + getcontext().prec + 2))
         print("MPH           ", speed)
         print("m/s           ", speed_in_ms)
@@ -51,6 +52,7 @@ def main():
         print("Time (proper) ", proptime)
         print("Time (proper) ", driving_time * gamma)
         print("Difference    ", diff)
+
 
 if __name__ == "__main__":
     main()

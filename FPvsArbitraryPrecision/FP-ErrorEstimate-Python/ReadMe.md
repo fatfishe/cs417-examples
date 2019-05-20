@@ -40,7 +40,7 @@ will be generated. Note that the `float` and `float-type-hint` lines may vary.
 ---
 
 An optional precision command line argument can be supplied to change the
-arbitrary precision used by the Python `decimal` module. For Example:
+arbitrary precision used by the Python `decimal` module. For example:
 
 ```
 ./precisionEstimate 1000000 16

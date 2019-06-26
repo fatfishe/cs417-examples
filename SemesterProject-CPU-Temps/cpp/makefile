@@ -2,7 +2,7 @@ MAINPROG=parseTemps
 
 SOURCES:=$(wildcard *.cpp)
 OBJECTS=$(SOURCES:.cpp=.o)
-FLAGS=-std=c++11 -fsanitize=address,leak  -Wall -fuse-ld=gold
+FLAGS=-std=c++11 -fsanitize=address,leak,undefined -Wall -Wextra -fuse-ld=gold
 
 all: $(SOURCES) $(MAINPROG)
 

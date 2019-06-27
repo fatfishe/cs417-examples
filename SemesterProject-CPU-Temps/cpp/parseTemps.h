@@ -26,6 +26,6 @@ using CoreTempReading = std::pair<int, std::vector<double>>;
  *         temperature readings
  */
 std::vector<CoreTempReading> parse_raw_temps(std::istream& original_temps,
-                                             int step_size=30);
+                                             int step_size = 30);
 
 #endif

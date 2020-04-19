@@ -1,34 +1,68 @@
-# C++ ignore rules
+# General Ignore Rules
+**/documentation/
 **.o
 **.d
-
-# Java ignore rules
+**.exe
+**.zip
 **.class
 **.jar
-!**wrapper.jar
-
-# Python rules
+!**gradle/wrapper/*.jar
 **.pyc
+**/docs
 
+# Binary Specific Ignore rules
+**/ll2
+**leak.out*
+**storage
+**runShapes
+**runshapes
+**updateRoom
+**registration
+**pointerReview
 
-# Gradle Ignore rules
-**/build
-**/.gradle
+**/build/
+**/.gradle/
 
-# Deploy Rules
-**.zip
+# Assignment Ignore Rules
+**Assignment-0*
 
-# Eclipse Project Rules
-**/.project
-**/.classpath
+# Eclipse Project Ignore Rules
+**.project
+**.settings
+**.classpath
 
+# Latex Ignore Rules
+**.aux
+
+# Scratch (temp) File & Directory Ignore rules
+Scratch
 **.bak
 
-# Latex
-**.aux
-**.toc
-**.dvi
-**latexmk
-**.fls
-**.log
-**.out
+# Vim rules
+**.swp
+
+# Python Coverage (coverage.py) Rules
+**/.coverage
+**/htmlcov
+
+# Python Disttools
+MANIFEST
+
+# Python Tox
+**.tox
+
+# Style Check reports
+**style-check*
+
+# Rust
+**/target
+
+# output comparison
+**/out-Rust.txt
+**/out-rust.txt
+**/out-cpp.txt
+
+# Gcovr rules
+**/source/*.html
+**.gcda
+**.gcno

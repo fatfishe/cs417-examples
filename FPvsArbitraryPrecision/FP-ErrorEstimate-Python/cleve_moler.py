@@ -1,12 +1,9 @@
 #! /usr/bin/env python3
 
 import math
-import sys
-import time
 import typing
 
 from decimal import (Decimal)
-import decimal
 from fractions import Fraction
 
 

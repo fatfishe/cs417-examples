@@ -8,7 +8,7 @@
 using namespace std;
 
 /**
- * Run an arbitrary function a predefined number of times.
+ * Run an arbitrary 0-argument function a predefined number of times.
  *
  * @param f function to run
  * @param numExecs number of function executions
@@ -16,19 +16,30 @@ using namespace std;
  * @return total execution time
  */
 template<typename T>
-long performExecs(T (*f)(), long numExecs)
+long performExecs(T (*f)(), const long numExecs)
 {
-    T p;
-
-    long start = time(NULL);
+    const long start = time(NULL);
 
     for (long i = 0; i < numExecs; i++) {
-        p = f();
+        const T p = f();
     }
 
-    long stop = time(NULL);
+    const long stop = time(NULL);
 
     return stop - start;
+}
+
+/**
+ * Run the cleveMoler estimatePeceision function a predefined number of times.
+ *
+ * @param numExecs number of function executions
+ *
+ * @return total execution time
+ */
+template<typename T>
+long performCleveMoler(const long numExecs)
+{
+	return performExecs(estimatePrecision<T>, numExecs);
 }
 
 //------------------------------------------------------------------------------
@@ -65,17 +76,18 @@ int main(int argc, char** argv)
     }
 
     // Perform Cleve Moler precision estimates
-    float    sp = estimatePrecision<float>();
-    double   dp = estimatePrecision<double>();
-    float128 qp = estimatePrecision<float128>();
+    const float    sp = estimatePrecision<float>();
+    const double   dp = estimatePrecision<double>();
+    const float128 qp = estimatePrecision<float128>();
 
-    long totalTime = performExecs(estimatePrecision<float>, numExecs);
+    // Repeat Cleve Moler precision estimates for benchmarks
+    long totalTime = performCleveMoler<float>(numExecs);
     cout << right << setw(4) <<  totalTime << " secs | " << sp << "\n";
 
-    totalTime = performExecs(estimatePrecision<double>, numExecs);
+    totalTime = performCleveMoler<double>(numExecs);
     cout << right << setw(4) <<  totalTime << " secs | " << dp << "\n";
 
-    totalTime = performExecs(estimatePrecision<float128>, numExecs);
+    totalTime = performCleveMoler<float128>(numExecs);
     cout << right << setw(4) <<  totalTime << " secs | " << qp << "\n";
 
     return 0;

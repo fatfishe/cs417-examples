@@ -1,6 +1,6 @@
 # Requirements
 
-  * g++ v5.4 or newer
+  * g++ v5.4 or newer (compilation was performed with g++ 9.3)
   * Boost 1.58.0 or newer
     * The `boost/multiprecision/float128.hpp` header must be available
   * Make
@@ -57,7 +57,7 @@ the following usage message will be displayed.
 Usage: ./precisionEstimate numExecs
 ```
 
-If run using 
+If run using
 
 ```
 ./precisionEstimate 100000000

@@ -12,30 +12,6 @@ from fractions import Fraction
 import cleve_moler as cm
 
 
-def estimate_precision_float():
-    a = (4.0 / 3.0)
-    b = a - 1.0
-    c = b + b + b
-
-    return math.fabs(c - 1.0)
-
-
-def estimate_precision_float_type_hints() -> float:
-    a = (4.0 / 3.0)  # type: float
-    b = a - 1.0      # type: float
-    c = b + b + b    # type: float
-
-    return math.fabs(c - 1.0)
-
-
-def estimate_precision_decimal() -> Decimal:
-    a = Decimal(4.0) / Decimal(3.0)
-    b = a - Decimal(1.0)
-    c = b + b + b
-
-    return abs(c)
-
-
 def perform_execs(est_func, num_execs):
     """
     Run an arbitrary function a predefined number of times.
@@ -48,7 +24,8 @@ def perform_execs(est_func, num_execs):
 
     start = time.time()
 
-    for i in range(0, num_execs):
+    #  for i in range(0, num_execs):
+    for _ in range(0, num_execs):
         x = est_func()
 
     stop = time.time()
@@ -66,7 +43,7 @@ def main():
     try:
         num_execs = int(sys.argv[1])
 
-    except ValueError as e:
+    except ValueError as _e:
         sys.exit(1)
 
     if len(sys.argv) == 3:

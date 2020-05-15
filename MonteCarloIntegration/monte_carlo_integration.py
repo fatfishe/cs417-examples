@@ -86,7 +86,7 @@ def main_without_a_table_flip():
     integration
     """
 
-    num_points = int(sys.argv[1])
+    num_points = int(sys.argv[1])  # Unused in this version of main
     limit_a = float(sys.argv[2])
     limit_b = float(sys.argv[3])
     max_magnitude = int(sys.argv[4])
@@ -111,5 +111,6 @@ def main_without_a_table_flip():
 
 
 if __name__ == "__main__":
+    #  naive_main()
     #  not_so_naive_main()
     main_without_a_table_flip()

@@ -12,7 +12,7 @@ button). In general, cloning the repo using
 git clone git@git-community.cs.odu.edu:tkennedy/cs417-lecture-examples.git
 ```
 
-is the better option. Cloning the repo will allow you to download updats from
+is the better option. Cloning the repo will allow you to download updates from
 lecture using
 
 ```

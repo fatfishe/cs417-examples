@@ -14,7 +14,8 @@ def compute_gamma(speed):
     """
     Compute Gamma and Inverse Gamma
 
-    :param: speed speed in m/s
+    Args:
+        speed: travel speed in m/s
     """
 
     gamma     = Decimal(1.0) / Decimal.sqrt(1 - (speed / C) ** Decimal(2))
@@ -44,14 +45,14 @@ def main():
         diff = driving_time - proptime
 
         print("-" * (14 + getcontext().prec + 2))
-        print("MPH           ", speed)
-        print("m/s           ", speed_in_ms)
-        print("Gamma         ", gamma)
-        print("Gamma inv     ", gamma_inv)
-        print("Time          ", driving_time)
-        print("Time (proper) ", proptime)
-        print("Time (proper) ", driving_time * gamma)
-        print("Difference    ", diff)
+        print(f"MPH           {speed}")
+        print(f"m/s           {speed_in_ms}")
+        print(f"Gamma         {gamma}")
+        print(f"Gamma inv     {gamma_inv}")
+        print(f"Time          {driving_time}")
+        print(f"Time (proper) {proptime}")
+        print(f"Time (proper) {driving_time * gamma}")
+        print(f"Difference    {diff}")
 
 
 if __name__ == "__main__":

@@ -16,8 +16,8 @@ namespace std {
      */
     inline
     float128 abs(float128 x)
-    {
-        return (x < 0 ? -x : x);
+    {   
+        return signbit(x) ? changesign(x) : x;
     }
 }
 

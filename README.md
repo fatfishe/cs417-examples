@@ -39,4 +39,6 @@ compiler/interpreter, compilation instructions, and example commands.
 
 # Dockerfile
 
-*Ignore the Docker file.* It is used for testing.
+Run `docker build --tag 417-examples:0.1 .` to build the Docker image.
+
+Run `docker run -it 417-examples:0.1` to run the Docker image.

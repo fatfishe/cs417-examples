@@ -1,38 +1,31 @@
 buildscript {
     repositories {
         jcenter()
-
-        // Add SpotBugs required repo
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
-    }
-
-    dependencies {
-        classpath "org.ysb33r.gradle:doxygen:0.2"
-
-        // Add SpotBugs
-        classpath "gradle.plugin.com.github.spotbugs:gradlePlugin:1.6.0"
     }
 }
 
-apply plugin: "java"
-//apply plugin: "application"
-apply plugin: "eclipse"
-apply plugin: "org.ysb33r.doxygen"
-apply plugin: "jacoco"
+plugins {
+    id "java"
+    id "application"
+    id "eclipse"
 
-apply plugin: "findbugs"
-apply plugin: "pmd"
-apply plugin: "com.github.spotbugs"
-
-apply plugin: "checkstyle"
+    id "checkstyle"
+    id "com.github.spotbugs" version "2.0.0"
+    id "project-report"
+    id "jacoco"
+    id "pmd"
+}
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 repositories {
     jcenter()
+}
+
+dependencies {
+    testCompile "junit:junit:4.12"
+    testCompile "org.hamcrest:hamcrest-library:1.3"
 }
 
 jar {
@@ -48,16 +41,9 @@ jar {
 task deploy(dependsOn: [javadoc, check, jar]){
 }
 
-/**
- * Run code style/error checks
- */
-findbugsMain {
-    ignoreFailures true
-    reports {
-        xml.enabled false
-        html.enabled true
-    }
-}
+//------------------------------------------------------------------------------
+// Analysis Tools
+//------------------------------------------------------------------------------
 
 // SpotBugs
 spotbugsMain {
@@ -74,7 +60,7 @@ spotbugsTest.enabled = false
 // End SpotBugs config
 
 jacoco {
-    toolVersion = "0.8.0"
+    toolVersion = "0.8.5"
 }
 
 jacocoTestReport {
@@ -83,32 +69,6 @@ jacocoTestReport {
         xml.enabled true
         csv.enabled true
     }
-}
-
-pmd {
-    ignoreFailures = true
-    ruleSets = [
-        "java-basic",
-        "java-braces",
-        //"java-clone",
-        "java-codesize",
-        //"java-comments",
-        //"java-controversial",
-        //"java-coupling",
-        //"java-design",
-        "java-empty",
-        //"java-finalizers",
-        "java-imports",
-        //"java-junit",
-        "java-naming",
-        //"java-optimizations",
-        "java-strictexception",
-        "java-strings",
-        "java-sunsecure",
-        "java-typeresolution",
-        "java-unnecessary",
-        "java-unusedcode"
-    ]
 }
 
 // Check Style Config
@@ -124,3 +84,15 @@ tasks.withType(Checkstyle) {
 }
 checkstyleTest.enabled = false
 // End Checkstyle config
+
+pmd {
+    ignoreFailures = true
+    ruleSets = [
+        "category/java/bestpractices.xml",
+        "category/java/codestyle.xml",
+        "category/java/design.xml",
+        "category/java/errorprone.xml",
+        "category/java/performance.xml"
+    ]
+}
+

@@ -16,7 +16,7 @@ namespace std {
      */
     inline
     float128 abs(float128 x)
-    {   
+    {
         return signbit(x) ? changesign(x) : x;
     }
 }
@@ -46,11 +46,13 @@ float128 estimatePrecision<float128>()
 {
     using T = float128;
 
-    T a = (4.0Q / 3.0Q);
-    T b = a - 1.0Q;
+    T ONE = float128{1.0};
+
+    T a = T{4.0} / T{3.0};
+    T b = a - ONE;
     T c = b + b + b;
 
-    return std::abs(c - 1.0Q);
+    return std::abs(c - ONE);
 }
 
 #endif

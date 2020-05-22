@@ -73,3 +73,50 @@ output *simliar* to
 
 will  be displayed. Note that the precision estimates will vary by
 architecture/system.
+
+
+---
+
+# Merge Requests
+
+This section documents contributions made by students via merge requests.
+
+
+## Replace naïve float128 abs implementation with something closer to Rust implementation 
+
+**Author**: Alex Launi
+**Date**: 2020-05-21
+
+#### Goal
+
+Remove bottleneck caused by conditional negation implementation of float128 abs.
+
+#### Results
+
+Note: these were run on a 2019 MacBook Pro using a 2.4 GHz 8-Core Intel Core i9.
+
+| Version    | Time (1x10^9)   |
+| ---        | --------------: |
+| Orig (-O0) | 326s            |
+| Mine (-O0) | __179s__        |
+| Orig (-O3) | 92s             |
+| Mine (-O3) | __60s__         |
+
+#### Possible Improvement
+
+Rust uses MPFR on the backend. I dug into the MPFR source, and this is close to
+the implementation used. The primary difference is the use of a `MPFR_SET_SIGN`
+macro. Boost has a copysign(const T& x, const T& y) which copies the sign from
+y to x. Something like
+
+```C++
+inline
+float128 abs(float 128 x)
+{
+    const float128 p = 1.0Q;
+    return copysign(x, p);
+}
+```
+
+should work, but I was unable to get any use of copysign to compile. I settled
+on the approach used in this merge request. I think the results speak well.

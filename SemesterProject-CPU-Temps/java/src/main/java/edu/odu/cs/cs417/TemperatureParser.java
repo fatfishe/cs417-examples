@@ -89,7 +89,7 @@ public class TemperatureParser
                                         int stepSize)
     {
         String[][] rawLines = inputTemps.lines()
-                                        .map(s -> s.split("°C\\s*"))
+                                        .map(s -> s.split("([^0-9]*\\s)|([^0-9]*$)"))
                                         .toArray(String[][]::new);
 
         List<CoreTempReading> allReadings = new Vector<>(rawLines.length);

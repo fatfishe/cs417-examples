@@ -2,6 +2,7 @@
 #include <iomanip>
 #include <fstream>
 #include <vector>
+#include <list>
 #include <sstream>
 #include <memory>
 #include <iterator>
@@ -28,7 +29,11 @@ int main(int argc, char** argv)
     }
     // End Input Validation
 
-    vector<CoreTempReading> readings = parse_raw_temps(input_temps);
+    // vector
+    auto readings = parse_raw_temps<std::vector<CoreTempReading>>(input_temps);
+
+    // list
+    // auto readings = parse_raw_temps<std::list<CoreTempReading>>(input_temps);
 
     // Output everything to match the Python version
     for (const CoreTempReading& theReading : readings) {

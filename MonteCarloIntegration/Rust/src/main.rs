@@ -14,25 +14,26 @@ struct Point(f64, f64);
 /// Yields:
 ///     A sequence of points in the form (x, f(x))
 
-fn generate_random_points(f: fn(f64) -> f64,
-                          lower_limit: f64,
-                          upper_limit: f64,
-                          n: u64) -> Vec<Point> {
-
+fn generate_random_points(
+    f: fn(f64) -> f64,
+    lower_limit: f64,
+    upper_limit: f64,
+    n: u64,
+) -> Vec<Point> {
     let d = rand::distributions::Uniform::new_inclusive(lower_limit, upper_limit);
     let mut rng = thread_rng();
 
-    (0..n).map(|_| {
-        let x = rng.sample(d);
-        Point(x, f(x))
-    }).collect()
+    (0..n)
+        .map(|_| {
+            let x = rng.sample(d);
+            Point(x, f(x))
+        })
+        .collect()
 }
 
 /// This main demonstrates the impact of the number of points on Monte Carlo
 /// integration
 fn main() {
-
-
     let num_points = env::args().nth(1).unwrap().parse::<u64>(); // Unused in this version of main
     let limit_a = env::args().nth(2).unwrap().parse::<f64>().unwrap();
     let limit_b = env::args().nth(3).unwrap().parse::<f64>().unwrap();
@@ -48,14 +49,13 @@ fn main() {
     for magnitude in 0..=max_magnitude {
         let num_points = 2_u64.pow(magnitude);
 
-        let sum_of_f_of_x_values: f64 = point_sequence.iter()
+        let sum_of_f_of_x_values: f64 = point_sequence
+            .iter()
             .map(|point| point.1)
             .take((num_points as usize))
             .sum();
 
-        let integral_result = (limit_b - limit_a) /
-                              (num_points as f64) *
-                              sum_of_f_of_x_values;
+        let integral_result = (limit_b - limit_a) / (num_points as f64) * sum_of_f_of_x_values;
 
         println!("| {:>16} | {:^20.8} |", num_points, integral_result);
     }

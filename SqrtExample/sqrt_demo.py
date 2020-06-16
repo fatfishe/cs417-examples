@@ -1,4 +1,4 @@
-#! /usr/bin/eny python
+#! /usr/bin/env python
 
 import math
 

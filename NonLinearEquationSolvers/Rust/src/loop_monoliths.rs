@@ -1,17 +1,8 @@
+use super::errors::InvariantError;
+
 const EPSILON: f64 = 10e-8;
 const MAX_ITERATIONS: u64 = 100;
 const ONE_HALF: f64 = 0.5;
-
-#[derive(Debug, Clone)]
-pub struct InvariantError {
-    pub msg: String,
-}
-
-impl InvariantError {
-    fn new(msg: String) -> Self {
-        InvariantError { msg }
-    }
-}
 
 /// Compute a solution to f using the bisection method
 ///
@@ -45,11 +36,8 @@ pub fn bisection(
 
     for n in 1..MAX_ITERATIONS {
         if f(b_n) < 0.0 {
-            return Err(InvariantError::new(format!(
-                "$f(b_{} = {}) < 0$",
-                (n - 1),
-                b_n
-            )));
+            let message = format!("$f(b_{} = {}) < 0$", (n - 1), b_n);
+            return Err(message.into());
         }
 
         x_n = ONE_HALF * (a_n + b_n);
@@ -103,9 +91,7 @@ pub fn regula_falsi(
         x_n = a_n - ((a_n - b_n) / (f(a_n) - f(b_n))) * f(a_n);
 
         if !x_n.is_finite() {
-            return Err(InvariantError::new(
-                format!("$f(a_n) - f(b_n) == 0$",),
-            ));
+            return Err(InvariantError::from("$f(a_n) - f(b_n) == 0$"));
         }
 
         if f(x_n) * f(a_n) > 0.0 {
@@ -151,9 +137,7 @@ pub fn secant(
             x_n - ((x_n - x_n_minus_1) / (f(x_n) - f(x_n_minus_1))) * f(x_n);
 
         if !next_x_n.is_finite() {
-            return Err(InvariantError::new(format!(
-                "$f(x_n) - f(x_nm1) == 0$",
-            )));
+            return Err(InvariantError::from("$f(x_n) - f(x_nm1) == 0$"));
         }
 
         x_n_minus_1 = x_n;
@@ -182,7 +166,7 @@ pub fn newton(
         let next_x_n = x_n - (f(x_n) / df(x_n));
 
         if !next_x_n.is_finite() {
-            return Err(InvariantError::new(format!("$df(x_n) == 0$")));
+            return Err(InvariantError::from("$df(x_n) == 0$"));
         }
 
         if (x_n - next_x_n).abs() < EPSILON {

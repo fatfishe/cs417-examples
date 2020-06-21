@@ -146,7 +146,8 @@ fn iter_example_1(
 ) {
     let mut newton_solver = iterators::NewtonSolver::new(a, &math_f, &math_df);
 
-    for (idx, x_n) in newton_solver.enumerate().take_while(|(idx, _)| idx < &10) {
+    for (idx, x_n) in newton_solver.enumerate().take_while(|(idx, _)| idx < &10)
+    {
         println!("{:>3}: {:>16.10}", idx, x_n);
     }
 }

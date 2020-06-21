@@ -5,7 +5,7 @@ const MAX_ITERATIONS: u64 = 100;
 const ONE_HALF: f64 = 0.5;
 
 /// Compute a solution to f using the bisection method
-///
+/// ```ignore
 /// a0 = a
 /// b0 = b
 ///
@@ -64,7 +64,7 @@ pub fn bisection(
 }
 
 /// Compute a solution to f using the false position method
-///
+/// ```ignore
 /// a0 = a
 /// b0 = b;
 ///
@@ -111,7 +111,7 @@ pub fn regula_falsi(
 }
 
 /// Compute a solution to f using the secant method
-///
+/// ```ignore
 /// x_{n-1} = a0 = a
 /// x_n = b0 = b;
 ///
@@ -152,7 +152,7 @@ pub fn secant(
 }
 
 /// Compute a solution to f using Newton's method.
-///
+/// ```ignore
 /// Compute x_{n+1} = x_n - (f(x_n) / df(x_n)) until
 /// |x_{n+1} - x_n| <= eps
 pub fn newton(

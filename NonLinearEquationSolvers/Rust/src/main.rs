@@ -1,5 +1,73 @@
 use std::env;
 use nonlinear_equation_solvers::loop_monoliths;
+use nonlinear_equation_solvers::iterators;
+
+/// Print the solution (x) and f(x) under a subsection heading.
+///
+/// :param solution: approximate solution
+/// :param fx_solution: f(solution)
+fn print_solution(solution: f64, fx_solution: f64) {
+    println!();
+    println!("## Solution");
+    println!("$x={:20.8}", solution);
+    println!();
+    println!("$f(x)={:20.8}", fx_solution);
+    println!();
+}
+
+/// Wrapper function that returns two math style functions:
+///
+///   - f - a function in the form Real -> Real
+///   - df - the derivative of f in the form Real -> Real
+///
+/// A where clause does not work...
+///
+/// <https://stackoverflow.com/questions/47514930/what-are-the-differences-between-an-impl-trait-argument-and-generic-function-par>
+///
+/// Rust lambdas/closures syntax is tied with C++'s shenanigans for frustration
+///
+fn __build_f_df() -> (impl Fn(f64) -> f64, impl Fn(f64) -> f64) {
+    let f = |x: f64| -> f64 {
+        // (x ** 2) - 1
+        // Fraction(math.cos(x))
+        // Fraction(math.log(x))  // can not have negative operand (Real)
+        // x**5 - (7 * x)**2
+        x.powf(2.0) - (3.0 * x) - 4.0
+    };
+
+    let df = Box::new(|x: f64| -> f64 {
+        // 2 * x
+        // Fraction(-1 * math.sin(x))
+        // Fraction(numerator=1, denominator=x)
+        // 5 * (x ** 4) - (14 * x)
+        2.0 * x - 3.0
+    });
+
+    (f, df)
+}
+
+/// Handle positional command line argument validation.
+///
+/// # Return
+///     Tuple in the form (lower limit, upper limit)
+fn __handle_cli_args() -> (f64, f64) {
+    let args: Vec<String> = env::args().collect();
+
+    if args.len() < 3 {
+        eprintln!("Usage:\n    {} a b", args[0]);
+        std::process::exit(1);
+    }
+
+    let limit_a = args[1]
+        .parse::<f64>()
+        .unwrap_or_else(|_err| std::process::exit(2));
+
+    let limit_b = args[2]
+        .parse::<f64>()
+        .unwrap_or_else(|_err| std::process::exit(3));
+
+    (limit_a, limit_b)
+}
 
 fn main() {
     let (a, b) = __handle_cli_args();
@@ -64,73 +132,41 @@ fn main() {
             println!("{:?}", err);
         }
     }
+
+    //--------------------------------------------------------------------------
+    iter_example_1(a, &math_f, &math_df);
+    println!();
+    iter_example_2(a, &math_f, &math_df);
 }
 
-/// Handle positional command line argument validation.
-///
-/// # Return
-///     Tuple in the form (lower limit, upper limit)
-fn __handle_cli_args() -> (f64, f64) {
-    let args: Vec<String> = env::args().collect();
+fn iter_example_1(
+    a: f64,
+    math_f: &impl Fn(f64) -> f64,
+    math_df: &impl Fn(f64) -> f64,
+) {
+    let mut newton_solver = iterators::NewtonSolver::new(a, &math_f, &math_df);
 
-    if args.len() < 3 {
-        eprintln!("Usage:\n    {} a b", args[0]);
-        std::process::exit(1);
+    for (idx, x_n) in newton_solver.enumerate().take_while(|(idx, _)| idx < &10) {
+        println!("{:>3}: {:>16.10}", idx, x_n);
     }
-
-    let limit_a = args[1]
-        .parse::<f64>()
-        .unwrap_or_else(|_err| std::process::exit(2));
-
-    let limit_b = args[2]
-        .parse::<f64>()
-        .unwrap_or_else(|_err| std::process::exit(3));
-
-    (limit_a, limit_b)
 }
 
-/// Print the solution (x) and f(x) under a subsection heading.
-///
-/// :param solution: approximate solution
-/// :param fx_solution: f(solution)
-fn print_solution(solution: f64, fx_solution: f64) {
-    println!();
-    println!("## Solution");
-    println!("$x={:20.8}", solution);
-    println!();
-    println!("$f(x)={:20.8}", fx_solution);
-    println!();
-}
+fn iter_example_2(
+    a: f64,
+    math_f: &impl Fn(f64) -> f64,
+    math_df: &impl Fn(f64) -> f64,
+) {
+    let mut newton_solver = iterators::NewtonSolver::new(a, &math_f, &math_df);
 
-/// Wrapper function that returns two math style functions:
-///
-///   - f - a function in the form Real -> Real
-///   - df - the derivative of f in the form Real -> Real
-///
-/// A where clause does not work...
-///
-/// <https://stackoverflow.com/questions/47514930/what-are-the-differences-between-an-impl-trait-argument-and-generic-function-par>
-///
-/// Rust lambdas/closures syntax is tied with C++'s shenanigans for frustration
-///
-fn __build_f_df() -> (impl Fn(f64) -> f64, impl Fn(f64) -> f64) {
-    let f = |x: f64| -> f64 {
-        // (x ** 2) - 1
-        // Fraction(math.cos(x))
-        // Fraction(math.log(x))  // can not have negative operand (Real)
-        // x**5 - (7 * x)**2
-        x.powf(2.0) - (3.0 * x) - 4.0
-    };
+    let first_few_guesses = newton_solver
+        .enumerate()
+        .take_while(|(idx, _)| idx < &10)
+        .map(|(_, guess)| guess)
+        .collect::<Vec<_>>();
 
-    let df = Box::new(|x: f64| -> f64 {
-        // 2 * x
-        // Fraction(-1 * math.sin(x))
-        // Fraction(numerator=1, denominator=x)
-        // 5 * (x ** 4) - (14 * x)
-        2.0 * x - 3.0
-    });
-
-    (f, df)
+    for x_n in first_few_guesses {
+        println!("{:>16.10}", x_n);
+    }
 }
 
 #[cfg(test)]

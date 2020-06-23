@@ -24,11 +24,11 @@ const ONE_HALF: f64 = 0.5;
 ///     end if;
 ///
 /// end for
-pub fn bisection(
-    f: &impl Fn(f64) -> f64,
-    a: f64,
-    b: f64,
-) -> Result<(u64, f64), InvariantError> {
+///
+pub fn bisection<F>(f: &F, a: f64, b: f64) -> Result<(u64, f64), InvariantError>
+where
+    F: Fn(f64) -> f64,
+{
     let mut a_n = a;
     let mut b_n = b;
 
@@ -77,11 +77,15 @@ pub fn bisection(
 ///         an+1 = an, bn+1 = xn
 ///     end if
 /// end for
-pub fn regula_falsi(
-    f: &impl Fn(f64) -> f64,
+///
+pub fn regula_falsi<F>(
+    f: &F,
     a: f64,
     b: f64,
-) -> Result<(u64, f64), InvariantError> {
+) -> Result<(u64, f64), InvariantError>
+where
+    F: Fn(f64) -> f64,
+{
     let mut a_n = a;
     let mut b_n = b;
 
@@ -124,11 +128,15 @@ pub fn regula_falsi(
 ///         an+1 = an, bn+1 = xn
 ///     end if
 /// end for
-pub fn secant(
-    f: &impl Fn(f64) -> f64,
+///
+pub fn secant<F>(
+    f: &F,
     x_n_minus_1_in: f64,
     x_n_in: f64,
-) -> Result<(u64, f64), InvariantError> {
+) -> Result<(u64, f64), InvariantError>
+where
+    F: Fn(f64) -> f64,
+{
     let mut x_n_minus_1 = x_n_minus_1_in;
     let mut x_n = x_n_in;
 
@@ -155,11 +163,16 @@ pub fn secant(
 /// ```ignore
 /// Compute x_{n+1} = x_n - (f(x_n) / df(x_n)) until
 /// |x_{n+1} - x_n| <= eps
-pub fn newton(
-    f: &impl Fn(f64) -> f64,
-    df: &impl Fn(f64) -> f64,
+///
+pub fn newton<F1, F2>(
+    f: &F1,
+    df: &F2,
     x_0: f64,
-) -> Result<(u64, f64), InvariantError> {
+) -> Result<(u64, f64), InvariantError>
+where
+    F1: Fn(f64) -> f64,
+    F2: Fn(f64) -> f64,
+{
     let mut x_n = x_0;
 
     for n in 1..MAX_ITERATIONS {

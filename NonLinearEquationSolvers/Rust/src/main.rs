@@ -35,13 +35,13 @@ fn __build_f_df() -> (impl Fn(f64) -> f64, impl Fn(f64) -> f64) {
         x.powf(2.0) - (3.0 * x) - 4.0
     };
 
-    let df = Box::new(|x: f64| -> f64 {
+    let df = |x: f64| -> f64 {
         // 2 * x
         // Fraction(-1 * math.sin(x))
         // Fraction(numerator=1, denominator=x)
         // 5 * (x ** 4) - (14 * x)
         2.0 * x - 3.0
-    });
+    };
 
     (f, df)
 }
@@ -139,11 +139,11 @@ fn main() {
     iter_example_2(a, &math_f, &math_df);
 }
 
-fn iter_example_1(
-    a: f64,
-    math_f: &impl Fn(f64) -> f64,
-    math_df: &impl Fn(f64) -> f64,
-) {
+fn iter_example_1<F1, F2>(a: f64, math_f: &F1, math_df: &F2)
+where
+    F1: Fn(f64) -> f64,
+    F2: Fn(f64) -> f64,
+{
     let mut newton_solver = iterators::NewtonSolver::new(a, &math_f, &math_df);
 
     for (idx, x_n) in newton_solver.enumerate().take_while(|(idx, _)| idx < &10)

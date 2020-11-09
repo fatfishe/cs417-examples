@@ -28,7 +28,7 @@ using CoreTempReading = std::pair<int, std::vector<double>>;
  */
 template<typename CoreTempReadingContainer>
 CoreTempReadingContainer parse_raw_temps(std::istream& original_temps,
-                                             int step_size = 30)
+                                         int step_size = 30)
 {
     CoreTempReadingContainer allTheReadings;
 

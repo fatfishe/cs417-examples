@@ -25,7 +25,7 @@ impl<'a> NewtonSolver<'a> {
         }
     }
 
-    pub fn iter(&mut self) -> &mut Self {
+    pub fn iter_mut(&mut self) -> &mut Self {
         self
     }
 }

@@ -100,7 +100,7 @@ where
 
         if f(x_n) * f(a_n) > 0.0 {
             a_n = x_n;
-        // b_n - No change
+            // b_n - No change
         } else {
             // a_n - No Change
             b_n = x_n;

@@ -32,15 +32,28 @@ def generate_random_points(f: Callable,
         yield (x, y)
 
 
+def __parse_cmd_line_args() -> Tuple[int, float, float, int]:
+    """
+    This is a helper/utility function to parse command line arguments, 3 of
+    which are common between the examnple main functions
+    """
+
+    num_points = int(sys.argv[1])  # Unused in this version of main
+    limit_a = float(sys.argv[2])
+    limit_b = float(sys.argv[3])
+
+    max_magnitude = int(sys.argv[4]) if len(sys.argv) >= 5 else None
+
+    return (num_points, limit_a, limit_b, max_magnitude)
+
+
 def naive_main():
     """
     This is a "naive" main function used to demonstrate the basic premise
     behind Monte Carlo integration.
     """
 
-    num_points = int(sys.argv[1])
-    limit_a = float(sys.argv[2])
-    limit_b = float(sys.argv[3])
+    num_points, limit_a, limit_b, _ = __parse_cmd_line_args()
 
     math_f = lambda x: x**2
     #  math_f = lambda x: cos(x)
@@ -63,9 +76,7 @@ def not_so_naive_main():
     This main function demonstrates the more "Pythonic" approach
     """
 
-    num_points = int(sys.argv[1])
-    limit_a = float(sys.argv[2])
-    limit_b = float(sys.argv[3])
+    num_points, limit_a, limit_b, _ = __parse_cmd_line_args()
 
     math_f = lambda x: x**2
     #  math_f = lambda x: cos(x)
@@ -86,10 +97,7 @@ def main_without_a_table_flip():
     integration
     """
 
-    num_points = int(sys.argv[1])  # Unused in this version of main
-    limit_a = float(sys.argv[2])
-    limit_b = float(sys.argv[3])
-    max_magnitude = int(sys.argv[4])
+    _, limit_a, limit_b, max_magnitude = __parse_cmd_line_args()
 
     math_f = lambda x: x**2
 
@@ -111,6 +119,6 @@ def main_without_a_table_flip():
 
 
 if __name__ == "__main__":
-    #  naive_main()
+    naive_main()
     #  not_so_naive_main()
-    main_without_a_table_flip()
+    #  main_without_a_table_flip()

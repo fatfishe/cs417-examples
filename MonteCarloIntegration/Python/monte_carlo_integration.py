@@ -38,7 +38,7 @@ def __parse_cmd_line_args() -> Tuple[int, float, float, int]:
     which are common between the examnple main functions
     """
 
-    num_points = int(sys.argv[1])  # Unused in this version of main
+    num_points = int(sys.argv[1])
     limit_a = float(sys.argv[2])
     limit_b = float(sys.argv[3])
 
@@ -119,6 +119,6 @@ def main_without_a_table_flip():
 
 
 if __name__ == "__main__":
-    naive_main()
+    #  naive_main()
     #  not_so_naive_main()
-    #  main_without_a_table_flip()
+    main_without_a_table_flip()

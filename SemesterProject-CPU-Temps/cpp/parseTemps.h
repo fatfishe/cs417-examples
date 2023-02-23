@@ -2,6 +2,7 @@
 #define PARSE_TEMPS_H_INCLUDED
 
 #include <iostream>
+#include <sstream>
 #include <iterator>
 #include <algorithm>
 #include <utility>
@@ -17,7 +18,7 @@ using CoreTempReading = std::pair<int, std::vector<double>>;
 /**
  * Take an input file and time-step size and parse all core temps.
  *
- * @tparam CoreTempReadingContainer type of container to use (it must implement
+ * @tparam Container type of container to use (it must implement
  *     push_back and emplace_back)
  *
  * @param original_temps an input file
@@ -26,11 +27,11 @@ using CoreTempReading = std::pair<int, std::vector<double>>;
  * @return a vector of 2-tuples (pairs) containing time step and core
  *         temperature readings
  */
-template<typename CoreTempReadingContainer>
-CoreTempReadingContainer parse_raw_temps(std::istream& original_temps,
-                                         int step_size = 30)
+template<template<typename...> class Container>
+Container<CoreTempReading> parse_raw_temps(std::istream& original_temps,
+                                           int step_size = 30)
 {
-    CoreTempReadingContainer allTheReadings;
+    Container<CoreTempReading> allTheReadings;
 
     // Input Parsing Variables
     int step = 0;

@@ -1,5 +1,6 @@
 use rand::prelude::*;
 use std::env;
+use rayon::prelude::*;
 
 struct Point(f64, f64);
 
@@ -76,7 +77,7 @@ fn main() {
         let num_points = 2_u64.pow(magnitude);
 
         let sum_of_f_of_x_values: f64 = point_sequence
-            .iter()
+            .par_iter()
             .map(|point| point.1)
             .take(num_points as usize)
             .sum();

@@ -67,7 +67,7 @@ std::vector<double> fill_demo_data(const int pre_fill_size = 100000)
 
 int main(const int argc, const char* const* argv)
 {
-    vector<double> numbers = fill_demo_data();
+    vector<double> numbers = fill_demo_data(atoi(argv[1]));
 
     const double naive_avg = naive_average(numbers);
     const double stable_mean = running_average(numbers);

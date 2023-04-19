@@ -165,9 +165,34 @@ def main_with_numpy():
                            float(num_points) *
                            sum(f_of_x_values))
 
-        #  integral_result = ((limit_b - limit_a) /
-                           #  float(num_points) *
-                           #  f_of_x_values.sum())
+        print(f"| {num_points:>16} | {integral_result:^20.8f} |")
+
+
+@simple_timer
+def main_with_numpy_better():
+    """
+    This main demonstrates the impact of the number of points on Monte Carlo
+    integration
+    """
+
+    _, limit_a, limit_b, max_magnitude = __parse_cmd_line_args()
+
+    math_f = lambda x: x**2
+
+    print("| {:^16} | {:^20} |".format("# Points", "Est. f(x)"))
+
+    max_num_points = 2 ** max_magnitude
+    all_x_values = np.random.uniform(low=limit_a, high=limit_b, size=max_num_points)
+    all_y_values = math_f(all_x_values)
+
+    for magnitude in range(0, max_magnitude + 1):
+        num_points = 2 ** magnitude
+
+        f_of_x_values = all_y_values[:num_points]
+
+        integral_result = ((limit_b - limit_a) /
+                           float(num_points) *
+                           f_of_x_values.sum())
 
         print(f"| {num_points:>16} | {integral_result:^20.8f} |")
 
@@ -176,4 +201,5 @@ if __name__ == "__main__":
     #  naive_main()
     #  not_so_naive_main()
     main_without_a_table_flip()
-    #  main_with_numpy()
+    main_with_numpy()
+    main_with_numpy_better()

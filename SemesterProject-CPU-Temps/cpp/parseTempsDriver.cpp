@@ -3,10 +3,6 @@
 #include <fstream>
 #include <vector>
 #include <list>
-#include <sstream>
-#include <memory>
-#include <iterator>
-#include <algorithm>
 #include <utility>
 
 #include "parseTemps.h"
@@ -30,7 +26,7 @@ int main(int argc, char** argv)
     // End Input Validation
 
     // vector
-    auto readings = parse_raw_temps<std::vector<CoreTempReading>>(input_temps);
+    auto readings = parse_raw_temps<std::vector>(input_temps);
 
     // list
     // auto readings = parse_raw_temps<std::list<CoreTempReading>>(input_temps);

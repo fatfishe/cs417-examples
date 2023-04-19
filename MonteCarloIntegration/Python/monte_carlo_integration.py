@@ -8,7 +8,7 @@ from typing import (Callable, Tuple)
 Point = Tuple[float, float]
 
 
-def generate_random_points(f: Callable,
+def generate_random_points(f: Callable[[float], float],
                            lower_limit: float,
                            upper_limit: float,
                            n: int) -> Point:

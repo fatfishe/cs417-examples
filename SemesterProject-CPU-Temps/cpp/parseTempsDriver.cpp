@@ -89,8 +89,8 @@ int main(int argc, char** argv)
         const std::vector<double>& coreReadings = theReading.second;
 
         times.push_back(time);
-        for (int i = 0; i < coreReadings.size(); ++i) {
-            allCoreTemperatures[i].push_back(coreReadings[i]);
+        for (int coreIdx = 0; coreIdx < coreReadings.size(); ++coreIdx) {
+            allCoreTemperatures[coreIdx].push_back(coreReadings[coreIdx]);
         }
     }
 

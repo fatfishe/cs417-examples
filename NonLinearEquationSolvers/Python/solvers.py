@@ -2,9 +2,8 @@
 Collection of instrumented nonlinear solvers for CS 417/517 lecture examples.
 """
 
-from typing import (Callable)
 from fractions import Fraction
-
+from typing import Callable
 
 EPSILON = 10e-6
 MAX_ITERATIONS = 100

@@ -9,7 +9,7 @@ all: $(SOURCES) $(MAINPROG)
 $(MAINPROG): $(OBJECTS)
 	gcc $(FLAGS) $(OBJECTS) -o $@
 
-.cpp.o:
+.c.o:
 	gcc $(FLAGS) -c $< -o $@
 
 clean:

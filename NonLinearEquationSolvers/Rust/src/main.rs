@@ -137,6 +137,8 @@ fn main() {
     iter_example_1(a, &math_f, &math_df);
     println!();
     iter_example_2(a, &math_f, &math_df);
+    println!();
+    iter_example_3(a, &math_f, &math_df);
 }
 
 fn iter_example_1<F1, F2>(a: f64, math_f: &F1, math_df: &F2)
@@ -168,6 +170,31 @@ fn iter_example_2(
     for state in first_few_guesses {
         println!("{:>16.10}", state.get_current_guess());
     }
+}
+
+fn iter_example_3(
+    first_guess: f64,
+    math_f: &impl Fn(f64) -> f64,
+    math_df: &impl Fn(f64) -> f64,
+) {
+    let mut x_n = first_guess;
+    let solver = std::iter::repeat_with(|| {
+        let prev_x_n = x_n;
+        let next_x_n = x_n - (math_f(x_n) / math_df(x_n));
+        x_n = next_x_n;
+
+        (prev_x_n, next_x_n)
+    });
+
+    let first_few_guesses = solver
+        .take_while(|(prev, next)| (next - prev).abs() > 10e-8)
+        .map(|(_, guess)| guess)
+        .collect::<Vec<_>>();
+
+    for guess in first_few_guesses {
+        println!("{:>16.10}", guess);
+    }
+
 }
 
 #[cfg(test)]

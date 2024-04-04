@@ -144,9 +144,9 @@ where
     F1: Fn(f64) -> f64,
     F2: Fn(f64) -> f64,
 {
-    let mut newton_solver = iterators::NewtonSolver::new(a, &math_f, &math_df);
+    let newton_solver = iterators::NewtonSolver::new(a, &math_f, &math_df);
 
-    for (idx, x_n) in newton_solver.enumerate().take_while(|(idx, _)| idx < &10)
+    for (idx, x_n) in newton_solver.map(|state| state.get_current_guess()).enumerate().take_while(|(idx, _)| idx < &10)
     {
         println!("{:>3}: {:>16.10}", idx, x_n);
     }
@@ -157,7 +157,7 @@ fn iter_example_2(
     math_f: &impl Fn(f64) -> f64,
     math_df: &impl Fn(f64) -> f64,
 ) {
-    let mut newton_solver = iterators::NewtonSolver::new(a, &math_f, &math_df);
+    let newton_solver = iterators::NewtonSolver::new(a, &math_f, &math_df);
 
     let first_few_guesses = newton_solver
         .enumerate()
@@ -165,8 +165,8 @@ fn iter_example_2(
         .map(|(_, guess)| guess)
         .collect::<Vec<_>>();
 
-    for x_n in first_few_guesses {
-        println!("{:>16.10}", x_n);
+    for state in first_few_guesses {
+        println!("{:>16.10}", state.get_current_guess());
     }
 }
 

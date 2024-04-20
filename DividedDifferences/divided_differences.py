@@ -3,10 +3,10 @@
 import copy
 import logging
 import sys
-from typing import Generator, List, TextIO, Tuple
+from typing import Generator, TextIO
 
 
-def read_input_points(open_file: TextIO) -> Generator[Tuple[float, float], None, None]:
+def read_input_points(open_file: TextIO) -> Generator[tuple[float, float], None, None]:
     """
     TBW
 
@@ -22,7 +22,7 @@ def read_input_points(open_file: TextIO) -> Generator[Tuple[float, float], None,
         yield (x, y)
 
 
-def algorithm_31(x_values: List[float], fx_values: List[float]) -> List[List[float]]:
+def algorithm_31(x_values: list[float], fx_values: list[float]) -> list[list[float]]:
     """
     TBW
 
@@ -39,7 +39,7 @@ def algorithm_31(x_values: List[float], fx_values: List[float]) -> List[List[flo
             pass
 
 
-def algorithm_32(x_values: List[float], fx_values: List[float]) -> List[float]:
+def algorithm_32(x_values: list[float], fx_values: list[float]) -> list[float]:
     """
     TBW
 

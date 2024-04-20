@@ -1,7 +1,7 @@
 from __future__ import annotations
-#  from typing import list
 
 import sys
+
 
 def compute_avg_naive(to_avg: list[float]) -> float:
     """

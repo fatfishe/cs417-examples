@@ -6,6 +6,7 @@ import typing
 from decimal import (Decimal)
 from fractions import Fraction
 
+D_ONE = Decimal(1.0)
 
 def estimate_precision_float():
     a = (4.0 / 3.0)
@@ -28,5 +29,5 @@ def estimate_precision_decimal() -> Decimal:
     b = a - Decimal(1.0)
     c = b + b + b
 
-    return abs(c)
+    return abs(D_ONE - c)
 

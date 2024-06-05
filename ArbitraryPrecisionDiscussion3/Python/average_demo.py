@@ -1,6 +1,7 @@
-from typing import List
+#  from typing import List
+from __future__ import annotations
 
-def compute_avg_naive(to_avg: List[float]) -> float:
+def compute_avg_naive(to_avg: list[float]) -> float:
     """
     Compute a naive average.
     """
@@ -8,7 +9,7 @@ def compute_avg_naive(to_avg: List[float]) -> float:
     return sum(to_avg) / len(to_avg)
 
 
-def compute_running_avg(to_avg: List[float]) -> float:
+def compute_running_avg(to_avg: list[float]) -> float:
     """
     Compute a stable mean (running average)
     """

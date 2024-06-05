@@ -1,11 +1,11 @@
 #! /usr/bin/env python3
 
 import sys
-
 from fractions import Fraction
 from typing import Tuple
 
-from solvers import (print_solution, bisection, regula_falsi, secant, newton)
+from solvers import bisection, newton, print_solution, regula_falsi, secant
+
 
 def __build_f_df():
     """
@@ -21,14 +21,14 @@ def __build_f_df():
         # return Fraction(math.cos(x))
         # return Fraction(math.log(x)) # can not have negative operand (Real)
         # return x**5 - (7 * x)**2
-        return x**2 - 3*x - 4
+        return x**2 - 3 * x - 4
 
     def df(x):
         # return 2 * x
         # return Fraction(-1 * math.sin(x))
         # return Fraction(numerator=1, denominator=x)
         # return 5 * (x ** 4) - (14 * x)
-        return 2 * x  - 3
+        return 2 * x - 3
 
     return (f, df)
 
@@ -55,7 +55,6 @@ def __handle_cli_args() -> Tuple[Fraction, Fraction]:
 
 
 def main():
-
     limit_a, limit_b = __handle_cli_args()
 
     # a = Fraction(-1 * math.pi / 4)
@@ -63,7 +62,9 @@ def main():
 
     math_f, math_df = __build_f_df()
 
+    # ---------------------------------------------------------------------------
     # Bisection Method
+    # ---------------------------------------------------------------------------
     print("# Bisection")
     print("## Steps")
 
@@ -78,7 +79,9 @@ def main():
         print("## Method Failed")
         print(str(err))
 
+    # ---------------------------------------------------------------------------
     # Regula Falsi (False Position)
+    # ---------------------------------------------------------------------------
     print()
     print("# Regula Falsi (False Position)")
     print("## Steps")
@@ -94,7 +97,9 @@ def main():
         print("## Method Failed")
         print(str(err))
 
+    # ---------------------------------------------------------------------------
     # Secant Method
+    # ---------------------------------------------------------------------------
     print()
     print("# Secant")
     print("## Steps")
@@ -110,7 +115,9 @@ def main():
         print("## Method Failed")
         print(str(err))
 
+    # ---------------------------------------------------------------------------
     # Newton's Method
+    # ---------------------------------------------------------------------------
     print()
     print("# Newton")
     print("## Steps")

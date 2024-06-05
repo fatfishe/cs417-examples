@@ -3,12 +3,11 @@
 import random
 import sys
 import time
-
-from typing import (Callable, Tuple)
+from typing import Callable, Generator
 
 import numpy as np
 
-Point = Tuple[float, float]
+Point = tuple[float, float]
 
 def simple_timer(function):
     """
@@ -28,10 +27,10 @@ def simple_timer(function):
     return wrapper
 
 
-def generate_random_points(f: Callable,
+def generate_random_points(f: Callable[[float], float],
                            lower_limit: float,
                            upper_limit: float,
-                           n: int) -> Point:
+                           n: int) -> Generator[Point, None, None]:
     """
     Generate a sequence of random x values and plug them into f(x).
 
@@ -52,7 +51,7 @@ def generate_random_points(f: Callable,
         yield (x, y)
 
 
-def __parse_cmd_line_args() -> Tuple[int, float, float, int]:
+def __parse_cmd_line_args() -> tuple[int, float, float, int | None]:
     """
     This is a helper/utility function to parse command line arguments, 3 of
     which are common between the examnple main functions
@@ -80,7 +79,7 @@ def naive_main():
 
     print("{:-^80}".format("Points"), file=sys.stderr)
 
-    temp_sum = 0
+    temp_sum = 0.0
     for i, point in enumerate(generate_random_points(math_f, limit_a, limit_b, num_points)):
         print(f"{i:5d} - ({point[0]:>12.8f}, {point[1]:>12.8f})", file=sys.stderr)
 
@@ -119,6 +118,9 @@ def main_without_a_table_flip():
 
     _, limit_a, limit_b, max_magnitude = __parse_cmd_line_args()
 
+    if not max_magnitude:
+        raise ValueError("No 'max_magnitude' was provided")
+
     math_f = lambda x: x**2
 
     print("| {:^16} | {:^20} |".format("# Points", "Est. f(x)"))
@@ -148,6 +150,9 @@ def main_with_numpy():
 
     _, limit_a, limit_b, max_magnitude = __parse_cmd_line_args()
 
+    if not max_magnitude:
+        raise ValueError("No 'max_magnitude' was provided")
+
     math_f = lambda x: x**2
 
     print("| {:^16} | {:^20} |".format("# Points", "Est. f(x)"))
@@ -176,6 +181,9 @@ def main_with_numpy_better():
     """
 
     _, limit_a, limit_b, max_magnitude = __parse_cmd_line_args()
+
+    if not max_magnitude:
+        raise ValueError("No 'max_magnitude' was provided")
 
     math_f = lambda x: x**2
 

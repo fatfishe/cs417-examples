@@ -6,7 +6,6 @@ Add module doc
 
 import math
 import typing
-
 from typing import Callable
 
 
@@ -20,7 +19,6 @@ def approach_zero(f: Callable[[float], float]):
     """
 
     for i in range(0, 2000):
-
         x = 2**-i
         f_of_x = f(x)
 
@@ -32,7 +30,6 @@ if __name__ == "__main__":
 
     def f(x: float):
         return x**2 + 7 * x + 3
-
 
     #  approach_zero(lambda x: math.cos(x))
     approach_zero(f)

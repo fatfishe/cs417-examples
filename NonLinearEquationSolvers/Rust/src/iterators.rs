@@ -1,15 +1,12 @@
 use super::errors::InvariantError;
 
-trait IterableStateAdapter {
-    fn next_state(&mut self) -> Result<f64, InvariantError>;
+use std::rc::Rc;
 
-    fn get_current_guess(&self) -> Option<f64>;
-}
-
+#[derive(Clone)]
 pub struct NewtonSolver<'a> {
-    pub x_n: Option<f64>,
-    f: Box<dyn 'a + Fn(f64) -> f64>,
-    df: Box<dyn 'a + Fn(f64) -> f64>,
+    pub x_n: f64,
+    f: Rc<dyn 'a + Fn(f64) -> f64>,
+    df: Rc<dyn 'a + Fn(f64) -> f64>,
 }
 
 impl<'a> NewtonSolver<'a> {
@@ -19,54 +16,50 @@ impl<'a> NewtonSolver<'a> {
         math_df: &'a impl Fn(f64) -> f64,
     ) -> Self {
         NewtonSolver {
-            x_n: Some(x_0),
-            f: Box::new(math_f),
-            df: Box::new(math_df),
+            x_n: x_0,
+            f: Rc::new(math_f),
+            df: Rc::new(math_df),
         }
     }
 
     pub fn iter_mut(&mut self) -> &mut Self {
         self
     }
-}
 
-impl<'a> IterableStateAdapter for NewtonSolver<'a> {
-    fn next_state(&mut self) -> Result<f64, InvariantError> {
-        let x_n = self.x_n.unwrap();
+    fn next_state(&mut self) -> Result<Self, InvariantError> {
+        let x_n = self.x_n;
         let f = &self.f;
         let df = &self.df;
 
         let next_x_n = x_n - (f(x_n) / df(x_n));
 
-        match next_x_n.is_finite() {
-            false => Err(InvariantError::from("$df(x_n) == 0$")),
-            true => {
-                self.x_n = Some(next_x_n);
-                Ok(next_x_n)
-            }
+        if !next_x_n.is_finite() {
+            return Err(InvariantError::from("$df(x_n) == 0$"));
         }
+
+        self.x_n = next_x_n;
+
+        Ok(self.clone())
+
     }
 
-    fn get_current_guess(&self) -> Option<f64> {
+    pub fn get_current_guess(&self) -> f64 {
         self.x_n
     }
 }
 
 impl<'a> std::iter::Iterator for NewtonSolver<'a> {
-    type Item = f64;
+    type Item = NewtonSolver<'a>;
 
     fn next(&mut self) -> Option<Self::Item> {
-        let current_guess = self.get_current_guess();
+        match self.next_state() {
+            Err(_) => None,
+            Ok(state) => {
+                self.x_n = state.get_current_guess();
 
-        if let Some(x_n) = current_guess {
-            match self.next_state() {
-                Ok(x_n) => self.x_n = Some(x_n),
-                Err(_) => self.x_n = None,
+                Some(self.clone())
             }
-            return Some(x_n);
         }
-
-        None
     }
 }
 

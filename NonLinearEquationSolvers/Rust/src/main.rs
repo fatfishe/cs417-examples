@@ -26,7 +26,8 @@ fn print_solution(solution: f64, fx_solution: f64) {
 ///
 /// Rust lambdas/closures syntax is tied with C++'s shenanigans for frustration
 ///
-fn __build_f_df() -> (impl Fn(f64) -> f64, impl Fn(f64) -> f64) {
+fn __build_f_df() -> (impl Fn(f64) -> f64, impl Fn(f64) -> f64)
+{
     let f = |x: f64| -> f64 {
         // (x ** 2) - 1
         // Fraction(math.cos(x))

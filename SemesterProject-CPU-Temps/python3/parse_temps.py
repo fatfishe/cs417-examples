@@ -8,11 +8,12 @@ represents one or more functions.
 """
 
 import re
-from typing import (TextIO, Iterator, List, Tuple)
+from typing import Generator, TextIO
 
 
-def parse_raw_temps(original_temps: TextIO,
-                    step_size: int = 30) -> Iterator[Tuple[float, List[float]]]:
+def parse_raw_temps(
+    original_temps: TextIO, step_size: int = 30
+) -> Generator[tuple[float, list[float]], None, None]:
     """
     Take an input file and time-step size and parse all core temps.
 
@@ -29,5 +30,6 @@ def parse_raw_temps(original_temps: TextIO,
     split_re = re.compile(r"[^0-9]*\s+|[^0-9]*$")
 
     for step, line in enumerate(original_temps):
-        yield (step * step_size), \
-              [float(entry) for entry in split_re.split(line) if len(entry) > 0]
+        yield (step * step_size), [
+            float(entry) for entry in split_re.split(line) if len(entry) > 0
+        ]

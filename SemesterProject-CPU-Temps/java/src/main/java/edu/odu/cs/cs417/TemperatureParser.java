@@ -1,6 +1,7 @@
 package edu.odu.cs.cs417;
 
 import java.io.BufferedReader;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
@@ -85,22 +86,21 @@ public class TemperatureParser
      * @return a vector of 2-tuples (pairs) containing time step and core
      *         temperature readings
      */
-    public static List<CoreTempReading> parseRawTemps(BufferedReader inputTemps,
-                                        int stepSize)
+    public static List<CoreTempReading> parseRawTemps(
+        BufferedReader inputTemps, int stepSize
+    )
     {
         String[][] rawLines = inputTemps.lines()
-                                        .map(s -> s.split("([^0-9]*\\s)|([^0-9]*$)"))
-                                        .toArray(String[][]::new);
+            .map(s -> s.split("([^0-9]*\\s)|([^0-9]*$)"))
+            .toArray(String[][]::new);
 
         List<CoreTempReading> allReadings = new Vector<>(rawLines.length);
 
         int step = 0;
         for (String[] line : rawLines) {
-            double[] tempReadings = new double[line.length];
-
-            for (int i = 0; i < tempReadings.length; i++) {
-                tempReadings[i] = Double.parseDouble(line[i]);
-            }
+            final double[] tempReadings = Arrays.stream(line)
+                .mapToDouble(token -> Double.parseDouble(token))
+                .toArray();
 
             allReadings.add(new CoreTempReading(step, tempReadings));
 

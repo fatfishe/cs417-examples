@@ -2,7 +2,7 @@
 
 import sys
 
-from parse_temps import (parse_raw_temps)
+from parse_temps import parse_raw_temps
 
 
 def main():
@@ -14,14 +14,14 @@ def main():
 
     input_temps = sys.argv[1]
 
-    with open(input_temps, 'r') as temps_file:
+    with open(input_temps, "r") as temps_file:
         # ----------------------------------------------------------------------
         # Output raw structure
         # ----------------------------------------------------------------------
         for temps_as_floats in parse_raw_temps(temps_file):
             print(temps_as_floats)
 
-    with open(input_temps, 'r') as temps_file:
+    with open(input_temps, "r") as temps_file:
         # ----------------------------------------------------------------------
         # Split data
         # ----------------------------------------------------------------------
@@ -29,7 +29,7 @@ def main():
             time, core_data = temps_as_floats
             print(f"{time = } | {core_data = }")
 
-    with open(input_temps, 'r') as temps_file:
+    with open(input_temps, "r") as temps_file:
         # ----------------------------------------------------------------------
         # Split Data
         # ----------------------------------------------------------------------
@@ -47,10 +47,12 @@ def main():
 
         print(f"{times[:4] = }")
         print(f"{core_0_data[:4] = }")
-        for time, *temps in list(zip(times, core_0_data, core_1_data, core_2_data, core_3_data))[4:]:
+        for time, *temps in list(
+            zip(times, core_0_data, core_1_data, core_2_data, core_3_data)
+        )[4:]:
             print(f"{time=} {temps=}")
 
-    with open(input_temps, 'r') as temps_file:
+    with open(input_temps, "r") as temps_file:
         # ----------------------------------------------------------------------
         # Split Data, but Better!
         # ----------------------------------------------------------------------
@@ -67,5 +69,4 @@ def main():
 
 
 if __name__ == "__main__":
-
     main()

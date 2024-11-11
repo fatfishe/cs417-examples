@@ -4,11 +4,24 @@ import math
 from itertools import takewhile
 from typing import Generator
 
-from rust_prime_generation import can_be_divided_by_any
+from rust_prime_generation import can_be_divided_by_any, compute_next
 
+"""
+def compute_next(known_primes) -> int:
 
+    next_prime = known_primes[-1]
 
-def generate_primes(to_generate) -> Generator[int, None, None]:
+    # true once a prime number has been identified
+    is_prime = False
+
+    # Halt when a prime number has been identified
+    while not is_prime:
+        # Guess the next prime
+        next_prime += 2
+        is_prime = not can_be_divided_by_any(known_primes, next_prime)
+"""
+
+def generate_primes(to_generate: int) -> Generator[int, None, None]:
     """
     Generate a sequence of prime numbers
 
@@ -22,18 +35,7 @@ def generate_primes(to_generate) -> Generator[int, None, None]:
         yield next_prime
 
     for _i in range(3, to_generate + 1):
-        # prime from which to start calculations
-        next_prime = known_primes[-1]
-
-        # true once a prime number has been identified
-        is_prime = False
-
-        # Halt when a prime number has been identified
-        while not is_prime:
-            # Guess the next prime
-            next_prime += 2
-            is_prime = not can_be_divided_by_any(known_primes, next_prime)
-
+        next_prime = compute_next(known_primes)
         known_primes.append(next_prime)
 
         yield next_prime

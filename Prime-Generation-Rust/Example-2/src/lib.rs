@@ -25,6 +25,27 @@ fn can_be_divided_by_any(known_primes: Vec<u64>, next_prime: u64) -> bool {
     __can_be_divided_by_any(&known_primes, next_prime)
 }
 
+fn __compute_next(known_primes: &[u64]) -> u64 {
+    let mut next_prime = *known_primes.iter().last().unwrap();
+
+    // true once a prime number has been identified
+    let mut is_prime = false;
+
+    // Halt when a prime number has been identified
+    while !is_prime {
+        // Guess the next prime
+        next_prime += 2;
+        is_prime = !__can_be_divided_by_any(&known_primes, next_prime);
+    }
+
+    next_prime
+}
+
+#[pyfunction]
+fn compute_next(known_primes: Vec<u64>) -> u64 {
+    __compute_next(&known_primes)
+}
+
 /// Generate a sequence of prime numbers
 ///
 /// Keyword arguments:
@@ -37,18 +58,7 @@ fn generate_primes(to_generate: usize) -> Vec<u64>
     known_primes.push(3);
 
     for _idx in 3..=to_generate {
-        // prime from which to start calculations
-        let mut next_prime = *known_primes.iter().last().unwrap();
-
-        // true once a prime number has been identified
-        let mut is_prime = false;
-
-        // Halt when a prime number has been identified
-        while !is_prime {
-            // Guess the next prime
-            next_prime += 2;
-            is_prime = !__can_be_divided_by_any(&known_primes, next_prime);
-        }
+        let next_prime = __compute_next(&known_primes);
 
         known_primes.push(next_prime);
     }
@@ -60,6 +70,7 @@ fn generate_primes(to_generate: usize) -> Vec<u64>
 #[pymodule]
 fn rust_prime_generation(module: &Bound<'_, PyModule>) -> PyResult<()> {
     module.add_wrapped(wrap_pyfunction!(can_be_divided_by_any))?;
+    module.add_wrapped(wrap_pyfunction!(compute_next))?;
     module.add_wrapped(wrap_pyfunction!(generate_primes))?;
     Ok(())
 }

@@ -1,6 +1,6 @@
 use rand::prelude::*;
-use std::env;
 use rayon::prelude::*;
+use std::env;
 
 struct Point(f64, f64);
 

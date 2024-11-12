@@ -1,15 +1,7 @@
-#!/usr/bin/env python3
-"""
-Add module doc
-
-"""
-
-import math
-import typing
 from typing import Callable
 
 
-def approach_zero(f: Callable[[float], float]):
+def approach_zero(f: Callable[[float], float]) -> None:
     """
     Evaluate a given function (f) for x values in the range 1 to 2^(-2000)
     where each value is have the previous one (1, 0.5, 0.25, 0.125...)

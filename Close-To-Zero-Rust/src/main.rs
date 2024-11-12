@@ -1,6 +1,6 @@
-
 fn approach_zero<F>(f: F)
-    where F: Fn(f64) -> f64
+where
+    F: Fn(f64) -> f64,
 {
     for i in 0..2000 {
         let x = 2_f64.powf(-i as f64);

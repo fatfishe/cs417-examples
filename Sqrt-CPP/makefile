@@ -1,4 +1,4 @@
-MAINPROG=parseTemps # Replace this with your desired program name
+MAINPROG=sqrt_demo
 
 SOURCES:=$(wildcard *.cpp)
 OBJECTS=$(SOURCES:.cpp=.o)

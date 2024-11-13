@@ -1,12 +1,6 @@
-#! /usr/bin/env python3
-
 import decimal
-import math
 import sys
 import time
-import typing
-from decimal import Decimal
-from fractions import Fraction
 
 import cleve_moler as cm
 
@@ -23,16 +17,15 @@ def perform_execs(est_func, num_execs):
         2-tuple containing estimated precions and total execution time
     """
 
-    start = time.time()
+    start = time.perf_counter()
 
-    #  for i in range(0, num_execs):
     for _ in range(0, num_execs):
-        x = est_func()
+        estimate = est_func()
 
-    stop = time.time()
+    stop = time.perf_counter()
     total_time = stop - start
 
-    return (x, total_time)
+    return (estimate, total_time)
 
 
 def main():
@@ -54,7 +47,6 @@ def main():
 
     estimate_functions = [
         ("float", cm.estimate_precision_float),
-        ("float-type-hint", cm.estimate_precision_float_type_hints),
         (f"Decimal-{precision:}", cm.estimate_precision_decimal),
     ]
 

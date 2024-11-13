@@ -57,9 +57,11 @@ int main(int argc, char** argv)
         numExecs = std::stol(argv[1]);
 
         if (numExecs <= 0) {
-            throw std::domain_error("\"" + string(argv[1]) + "\" is not > 0"
-                                  + " and <= "
-                                  + to_string(std::numeric_limits<long>::max()));
+            throw std::domain_error(
+				"\"" + string(argv[1]) + "\" is not > 0"
+				+ " and <= "
+			  	+ to_string(std::numeric_limits<long>::max())
+			);
         }
     }
     catch (const std::invalid_argument& e) {

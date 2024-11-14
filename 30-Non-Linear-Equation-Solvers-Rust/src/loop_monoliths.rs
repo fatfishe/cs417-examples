@@ -36,8 +36,11 @@ where
 
     for n in 1..MAX_ITERATIONS {
         if f(b_n) < 0.0 {
-            let message = format!("$f(b_{} = {}) < 0$", (n - 1), b_n);
-            return Err(message.into());
+            return Err(InvariantError::from(format!(
+                "$f(b_{} = {}) < 0$",
+                (n - 1),
+                b_n
+            )));
         }
 
         x_n = ONE_HALF * (a_n + b_n);

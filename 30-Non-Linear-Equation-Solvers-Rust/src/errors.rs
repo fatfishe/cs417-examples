@@ -1,4 +1,7 @@
-#[derive(Debug, Clone)]
+use thiserror::Error;
+
+#[derive(Debug, Error, Clone)]
+#[error("{msg}")]
 pub struct InvariantError {
     msg: String,
 }

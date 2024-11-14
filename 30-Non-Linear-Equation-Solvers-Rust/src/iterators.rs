@@ -40,7 +40,6 @@ impl<'a> NewtonSolver<'a> {
         self.x_n = next_x_n;
 
         Ok(self.clone())
-
     }
 
     pub fn get_current_guess(&self) -> f64 {

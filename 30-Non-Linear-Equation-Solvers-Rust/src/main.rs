@@ -9,9 +9,9 @@ use nonlinear_equation_solvers::iterators;
 fn print_solution(solution: f64, fx_solution: f64) {
     println!();
     println!("## Solution");
-    println!("$x={:20.8}", solution);
+    println!("$x={solution:20.8}");
     println!();
-    println!("$f(x)={:20.8}", fx_solution);
+    println!("$f(x)={fx_solution:20.8}");
     println!();
 }
 
@@ -26,8 +26,7 @@ fn print_solution(solution: f64, fx_solution: f64) {
 ///
 /// Rust lambdas/closures syntax is tied with C++'s shenanigans for frustration
 ///
-fn __build_f_df() -> (impl Fn(f64) -> f64, impl Fn(f64) -> f64)
-{
+fn __build_f_df() -> (impl Fn(f64) -> f64, impl Fn(f64) -> f64) {
     let f = |x: f64| -> f64 {
         // (x ** 2) - 1
         // Fraction(math.cos(x))
@@ -149,7 +148,10 @@ where
 {
     let newton_solver = iterators::NewtonSolver::new(a, &math_f, &math_df);
 
-    for (idx, x_n) in newton_solver.map(|state| state.get_current_guess()).enumerate().take_while(|(idx, _)| idx < &10)
+    for (idx, x_n) in newton_solver
+        .map(|state| state.get_current_guess())
+        .enumerate()
+        .take_while(|(idx, _)| *idx < 10)
     {
         println!("{:>3}: {:>16.10}", idx, x_n);
     }
@@ -164,7 +166,7 @@ fn iter_example_2(
 
     let first_few_guesses = newton_solver
         .enumerate()
-        .take_while(|(idx, _)| idx < &10)
+        .take_while(|(idx, _)| *idx < 10)
         .map(|(_, guess)| guess)
         .collect::<Vec<_>>();
 
@@ -195,7 +197,6 @@ fn iter_example_3(
     for guess in first_few_guesses {
         println!("{:>16.10}", guess);
     }
-
 }
 
 #[cfg(test)]

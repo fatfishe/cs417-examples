@@ -2,24 +2,9 @@ use thiserror::Error;
 
 #[derive(Debug, Error, Clone)]
 #[error("{msg}")]
-pub struct InvariantError {
-    msg: String,
-}
-
-impl InvariantError {
-    pub fn new(msg: String) -> Self {
-        InvariantError { msg }
-    }
-}
-
-impl From<&str> for InvariantError {
-    fn from(msg: &str) -> Self {
-        InvariantError::new(msg.to_string())
-    }
-}
-
-impl From<String> for InvariantError {
-    fn from(msg: String) -> Self {
-        InvariantError::new(msg)
-    }
+pub enum InvariantError {
+    #[error("$df(x_n) == 0$")]
+    DerivativeIsZero,
+    #[error("{}", .0)]
+    Generic(String),
 }

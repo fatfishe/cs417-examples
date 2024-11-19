@@ -36,7 +36,7 @@ where
 
     for n in 1..MAX_ITERATIONS {
         if f(b_n) < 0.0 {
-            return Err(InvariantError::from(format!(
+            return Err(InvariantError::Generic(format!(
                 "$f(b_{} = {}) < 0$",
                 (n - 1),
                 b_n
@@ -98,7 +98,9 @@ where
         x_n = a_n - ((a_n - b_n) / (f(a_n) - f(b_n))) * f(a_n);
 
         if !x_n.is_finite() {
-            return Err(InvariantError::from("$f(a_n) - f(b_n) == 0$"));
+            return Err(InvariantError::Generic(
+                "$f(a_n) - f(b_n) == 0$".to_owned(),
+            ));
         }
 
         if f(x_n) * f(a_n) > 0.0 {
@@ -148,7 +150,9 @@ where
             x_n - ((x_n - x_n_minus_1) / (f(x_n) - f(x_n_minus_1))) * f(x_n);
 
         if !next_x_n.is_finite() {
-            return Err(InvariantError::from("$f(x_n) - f(x_nm1) == 0$"));
+            return Err(InvariantError::Generic(
+                "$f(x_n) - f(x_nm1) == 0$".to_owned(),
+            ));
         }
 
         x_n_minus_1 = x_n;
@@ -182,7 +186,7 @@ where
         let next_x_n = x_n - (f(x_n) / df(x_n));
 
         if !next_x_n.is_finite() {
-            return Err(InvariantError::from("$df(x_n) == 0$"));
+            return Err(InvariantError::Generic("$df(x_n) == 0$".to_owned()));
         }
 
         if (x_n - next_x_n).abs() < EPSILON {

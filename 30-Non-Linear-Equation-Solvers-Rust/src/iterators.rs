@@ -34,7 +34,7 @@ impl<'a> NewtonSolver<'a> {
         let next_x_n = x_n - (f(x_n) / df(x_n));
 
         if !next_x_n.is_finite() {
-            return Err(InvariantError::from("$df(x_n) == 0$"));
+            return Err(InvariantError::DerivativeIsZero);
         }
 
         self.x_n = next_x_n;

@@ -9,7 +9,7 @@ The contents of this repo can be downloaded as a zip file (using the download
 button). In general, cloning the repo using
 
 ```
-git clone git@git-community.cs.odu.edu:tkennedy/cs417-lecture-examples.git
+git clone https://github.com/cstkennedy/cs417-examples.git
 ```
 
 is the better option. Cloning the repo will allow you to download updates from
@@ -21,15 +21,15 @@ git pull
 
 ## SSH Keys
 
-To clone the repo, you will need to set up SSH Keys in
-<https://git-community.cs.odu.edu>.
+To clone the repo, you will need to set up SSH Keys on
+[GitHub](https://docs.github.com/en/authentication/connecting-to-github-with-ssh)
 
 
 # Languages
 
 Depending on the discussion, source code may be written in
 
-  - Python 3.7+
+  - Python 3.11+
   - C++ (11, 17, or 20)
   - Rust
 

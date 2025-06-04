@@ -9,3 +9,22 @@ impl FloatingPointDiffer for (f32, f32) {
         (self.0 - self.1).abs() > tolerance
     }
 }
+
+pub enum DiffersFrom {
+    Neither,
+    First,
+    Second,
+    Both,
+}
+
+pub fn first_differs_from(first: f32, second: f32, third: f32, tolerance: f32) -> DiffersFrom {
+    match (
+        (first, second).differ_more_than(tolerance),
+        (first, third).differ_more_than(tolerance),
+    ) {
+        (false, false) => DiffersFrom::Neither,
+        (true, false) => DiffersFrom::First,
+        (false, true) => DiffersFrom::Second,
+        (true, true) => DiffersFrom::Both,
+    }
+}

@@ -60,19 +60,19 @@ fn main() {
             || (result_1, result_3).differ_more_than(args.tolerance)
             || (result_2, result_3).differ_more_than(args.tolerance);
 
-        print!("|{x:16.12}|{y:16.12}|{z:16.12}");
+        print!("|{x:16.14}|{y:16.14}|{z:16.14}");
         println!(
             "|{}|{}|{}|{:^20}|",
             match first_differs_from(result_1, result_2, result_3, args.tolerance) {
-                DiffersFrom::Both => format!("{:16.12}", result_1).bright_cyan().bold(),
+                DiffersFrom::Both => format!("{:16.14}", result_1).bright_cyan().bold(),
                 _ => format!("{:16.12}", result_1).dimmed(),
             },
             match first_differs_from(result_2, result_1, result_3, args.tolerance) {
-                DiffersFrom::Both => format!("{:16.12}", result_1).bright_cyan().bold(),
+                DiffersFrom::Both => format!("{:16.14}", result_2).bright_cyan().bold(),
                 _ => format!("{:16.12}", result_2).dimmed(),
             },
             match first_differs_from(result_3, result_1, result_2, args.tolerance) {
-                DiffersFrom::Both => format!("{:16.12}", result_1).bright_cyan().bold(),
+                DiffersFrom::Both => format!("{:16.14}", result_3).bright_cyan().bold(),
                 _ => format!("{:16.12}", result_3).dimmed(),
             },
             if results_differ { "Yes" } else { "" }

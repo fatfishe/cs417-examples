@@ -1,4 +1,8 @@
+use clap::Parser;
+use colored::Colorize;
 use rand::prelude::*;
+
+use addition_order::*;
 
 pub fn perform_addition_1(x: f32, y: f32, z: f32) -> f32 {
     let x_plus_y = x + y;
@@ -18,12 +22,21 @@ pub fn perform_addition_3(x: f32, y: f32, z: f32) -> f32 {
     x_plus_z + y
 }
 
-pub fn differ_more_than_tolerance(num_1: f32, num_2: f32, tolerance: f32) -> bool {
-    (num_1 - num_2).abs() > tolerance
+/// Simple demonstration of floating point error on addition order
+#[derive(Parser, Debug)]
+#[command(version, about, long_about = None)]
+struct Args {
+    /// Number of floating point triples to generate
+    #[arg(short, long)]
+    number: usize,
+
+    /// Tolerance above which floating point values are considered different
+    #[arg(short, long, default_value_t = EPS)]
+    tolerance: f32,
 }
 
 fn main() {
-    const EPS: f32 = 1e-12;
+    let args = Args::parse();
 
     let mut rng = rand::rng();
 
@@ -32,7 +45,7 @@ fn main() {
         "x", "y", "z", "(x + y) + z", "x + (y + z)", "(x + z) + y", "Difference Found"
     );
 
-    for _ in 0..16 {
+    for _ in 0..args.number {
         let (x, y, z) = (
             rng.random::<f32>(),
             rng.random::<f32>(),
@@ -43,15 +56,34 @@ fn main() {
         let result_2 = perform_addition_2(x, y, z);
         let result_3 = perform_addition_3(x, y, z);
 
-        let results_differ = (differ_more_than_tolerance(result_1, result_2, EPS)
-            || differ_more_than_tolerance(result_1, result_3, EPS)
-            || differ_more_than_tolerance(result_2, result_3, EPS));
+        let results_differ = (result_1, result_2).differ_more_than(args.tolerance)
+            || (result_1, result_3).differ_more_than(args.tolerance)
+            || (result_2, result_3).differ_more_than(args.tolerance);
 
+        print!("|{x:16.12}|{y:16.12}|{z:16.12}");
         println!(
-            "|{x:16.12}|{y:16.12}|{z:16.12}|{:16.12}|{:16.12}|{:16.12}|{:^20}|",
-            result_1,
-            result_2,
-            result_3,
+            "|{}|{}|{}|{:^20}|",
+            if (result_1, result_2).differ_more_than(args.tolerance)
+                && (result_1, result_3).differ_more_than(args.tolerance)
+            {
+                format!("{:16.12}", result_1).bright_cyan().bold()
+            } else {
+                format!("{:16.12}", result_1).dimmed()
+            },
+            if (result_2, result_1).differ_more_than(args.tolerance)
+                && (result_2, result_3).differ_more_than(args.tolerance)
+            {
+                format!("{:16.12}", result_2).bright_cyan().bold()
+            } else {
+                format!("{:16.12}", result_2).dimmed()
+            },
+            if (result_3, result_1).differ_more_than(args.tolerance)
+                && (result_3, result_2).differ_more_than(args.tolerance)
+            {
+                format!("{:16.12}", result_3).bright_cyan().bold()
+            } else {
+                format!("{:16.12}", result_3).dimmed()
+            },
             if results_differ { "Yes" } else { "" }
         );
     }

@@ -1,6 +1,7 @@
 use rand::prelude::*;
 use rayon::prelude::*;
 use std::env;
+use clap::Parser;
 
 struct Point(f64, f64);
 
@@ -31,40 +32,26 @@ fn generate_random_points(
         .collect()
 }
 
-/// Handle positional command line argument validation.
-///
-/// # Return
-///     Tuple in the form (lower limit, upper limit, maximum magnitude)
-fn parse_cmd_args() -> (f64, f64, u32) {
-    let args: Vec<String> = env::args().collect();
+#[derive(Parser)]
+pub struct Args {
+    #[allow(unused)]
+    unused: String,
 
-    if args.len() < 4 {
-        eprintln!(
-            "Usage:\n    {} not_used num_points a b max_magnitude",
-            args[0]
-        );
-        std::process::exit(1);
-    }
+    /// lower limit
+    limit_a: f64,
 
-    let limit_a = args[2]
-        .parse::<f64>()
-        .unwrap_or_else(|_err| std::process::exit(2));
+    /// upper limit
+    limit_b: f64,
 
-    let limit_b = args[3]
-        .parse::<f64>()
-        .unwrap_or_else(|_err| std::process::exit(3));
-
-    let max_magnitude = args[4]
-        .parse::<u32>()
-        .unwrap_or_else(|_err| std::process::exit(4));
-
-    (limit_a, limit_b, max_magnitude)
+    /// maximum magnitude
+    max_magnitude: u32,
 }
 
 /// This main demonstrates the impact of the number of points on Monte Carlo
 /// integration
 fn main() {
-    let (limit_a, limit_b, max_magnitude) = parse_cmd_args();
+    let args = Args::parse();
+    let (limit_a, limit_b, max_magnitude) = (args.limit_a, args.limit_b, args.max_magnitude);
 
     let math_f = |x: f64| x.powf(2_f64);
 

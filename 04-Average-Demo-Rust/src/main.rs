@@ -17,7 +17,7 @@ fn main() {
     let argv: Vec<String> = std::env::args().collect();
 
     let half_length = if argv.len() > 1 {
-        argv[0].parse().unwrap()
+        argv[1].parse().unwrap()
     } else {
         50_000_usize
     };
